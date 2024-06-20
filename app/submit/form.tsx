@@ -47,6 +47,7 @@ const categories = [
   { label: "Fintech", value: "fintech" },
   { label: "Education", value: "education" },
   { label: "SaaS", value: "saas" },
+  { label: "Accelerator", value: "accelerator" },
 ]
 
 export const SubmitTool = () => {
