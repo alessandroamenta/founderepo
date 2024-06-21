@@ -37,32 +37,16 @@ async function Page({ searchParams }: { searchParams: { search?: string } }) {
         tags={filters.tags}
       />
 
-      <div className="max-w-full px-2 md:pl-4 md:pr-0 pt-2">
+      <div className="max-w-full px-2 md:px-4 pt-2">
         <FadeIn>
           <ResourceCardGrid
             sortedData={data}
             filteredFeaturedData={filteredFeaturedData}
           >
-            <div className="grid grid-cols-1  xl:grid-cols-6 lg:gap-16 pb-8 pt-8 relative">
-              <div className="col-span-1 md:col-span-2 z-10">
-                <Hero>
-                  <DirectorySearch />
-                </Hero>
-              </div>
-
-              <div className="col-span-1 md:col-span-4 mt-6 md:mt-0">
-                {filteredFeaturedData.length >= 1 ? (
-                  <Suspense fallback={<div>Loading...</div>}>
-                    <div className=" relative">
-                      <FeaturedGrid featuredData={filteredFeaturedData} />
-                    </div>
-                  </Suspense>
-                ) : (
-                  <div className="relative">
-                    <EmptyFeaturedGrid />
-                  </div>
-                )}
-              </div>
+            <div className="w-full max-w-none">
+              <Hero>
+                {/*<DirectorySearch />*/}
+              </Hero>
             </div>
           </ResourceCardGrid>
         </FadeIn>

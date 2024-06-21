@@ -33,31 +33,6 @@ export interface SEOCardGridProps {
   children?: React.ReactNode
 }
 
-interface Product {
-  id: string
-  created_at: string
-  full_name: string
-  email: string
-  twitter_handle: string
-  product_website: string
-  codename: string
-  punchline: string
-  description: string
-  logo_src: string
-  user_id: string
-  tags: string[]
-  view_count: number
-  approved: boolean
-  labels: string[]
-  categories: string
-}
-
-export interface SEOCardGridProps {
-  sortedData: Product[]
-  filteredFeaturedData: Product[] | null
-  children?: React.ReactNode
-}
-
 export const ResourceCardGrid: React.FC<SEOCardGridProps> = ({
   sortedData,
   children,
@@ -67,7 +42,7 @@ export const ResourceCardGrid: React.FC<SEOCardGridProps> = ({
     <div className="flex flex-col md:items-start gap-4 overflow-hidden pb-4 md:mx-4 mx-0 md:ml-[12rem] lg:ml-[12rem] relative">
       <div
         className={cn(
-          " px-4",
+          "w-full", // Add this to make it full width
           pathname.includes("/products")
             ? "md:p-4 md:gap-3"
             : "bg-white p-4 gap-3 dark:bg-[#1E1E1E] rounded-[2rem] shadow-[0_0_0_1px_rgba(0,0,0,0.1)_inset,0_0.5px_0.5px_rgba(0,0,0,0.05)_inset,0_-0.5px_0.5px_rgba(0,0,0,0.05)_inset,0_1px_2px_rgba(0,0,0,0.1)] dark:shadow-[0_0_0_0.5px_rgba(255,255,255,0.06)_inset,0_0.5px_0.5px_rgba(255,255,255,0.1)_inset,0_-0.5px_0.5px_rgba(255,255,255,0.1)_inset,0_0.5px_1px_rgba(0,0,0,0.3),0_1px_2px_rgba(0,0,0,0.4)]"
@@ -77,11 +52,6 @@ export const ResourceCardGrid: React.FC<SEOCardGridProps> = ({
       </div>
 
       <div
-        // className={cn(
-        //   "bg-white dark:bg-[#1E1E1E] rounded-[2rem] p-4 w-full",
-        //   "shadow-[0_0_0_1px_rgba(0,0,0,0.1)_inset,0_0.5px_0.5px_rgba(0,0,0,0.05)_inset,0_-0.5px_0.5px_rgba(0,0,0,0.05)_inset,0_1px_2px_rgba(0,0,0,0.1)]",
-        //   "dark:shadow-[0_0_0_0.5px_rgba(255,255,255,0.06)_inset,0_0.5px_0.5px_rgba(255,255,255,0.1)_inset,0_-0.5px_0.5px_rgba(255,255,255,0.1)_inset,0_0.5px_1px_rgba(0,0,0,0.3),0_1px_2px_rgba(0,0,0,0.4)]"
-        // )}
         className={cn(
           " p-4 w-full",
           pathname.includes("/products")

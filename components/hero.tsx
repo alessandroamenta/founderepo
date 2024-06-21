@@ -10,28 +10,27 @@ import Script from 'next/script';
 
 export function Hero({ children }: { children?: React.ReactNode }) {
   return (
-    <div className="flex flex-col items-center md:items-start md:px-2 justify-center gap-2 md:ml-12">
+    <div className="flex flex-col items-center justify-center gap-4 max-w-none mx-auto text-center">
       <div className="flex items-center space-x-2">
-        <h1 className="text-5xl font-black text-left">Founderepo</h1>
-
+        <h1 className="text-5xl font-black">Founderepo🚀</h1>
       </div>
-      <div className="flex flex-col items-center md:items-start md:mt-4">
+      <div className="flex flex-col items-center md:mt-4">
         <Badge className="hidden md:block" variant="default">
           A way for aspiring founders to get started
         </Badge>
-        <div className="flex w-full items-center mt-2 justify-center md:justify-start">
-          <span className="mx-2 text-xl font-bold text-left">
+        <div className="flex w-full items-center mt-2 justify-center md:justify-center">
+          <span className="mx-2 text-xl font-bold text-center">
             Directory of all the startup programs out there.
           </span>
         </div>
-        <p className="mt-2 text-center md:text-left text-muted-foreground text-sm md:text-base px-2">
-          We help founders who are starting out to get into the startup bubbe. Fast.
+        <p className="mt-2 text-center text-muted-foreground text-sm md:text-base px-2">
+          We help founders who are starting out get into the startup bubbe. Fast.
         </p>
       </div>
       <div className="flex mt-4 mb-4 space-x-4">
         <Button variant="secondary" asChild>
           <Link href="#tally-open=mD1o7X&tally-emoji-text=👋&tally-emoji-animation=tada" className="flex items-center text-black">
-            <PlusIcon className="size-4 mr-1" /> Submit tool
+            <PlusIcon className="size-4 mr-1" /> Submit program
           </Link>
         </Button>
         <a
@@ -45,7 +44,7 @@ export function Hero({ children }: { children?: React.ReactNode }) {
         </a>
       </div>
       {children}
-      <script async src="https://tally.so/widgets/embed.js"></script>
+      <Script async src="https://tally.so/widgets/embed.js"></Script>
     </div>
   )
 }
