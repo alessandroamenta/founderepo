@@ -125,46 +125,15 @@ export async function onSubmitToolAction(
       logoUrl = await uploadLogoFile(db, logoFile, parsed.data.programName)
     }
 
-    let tags: string[] = []
-    let labels: string[] = ["unlabeled"]
-
-    if (config.aiEnrichmentEnabled) {
-      console.log("Generating AI enrichment data")
-      const enrichmentPrompt = getAIEnrichmentPrompt(
-        parsed.data.programName,
-        parsed.data.programType || "",
-        parsed.data.description || ""
-      )
-      const { object: enrichment } = await generateObject({
-        model: config.aiModel,
-        schema: enrichmentSchema,
-        prompt: enrichmentPrompt,
-      })
-
-      tags = enrichment.tags || []
-      labels = enrichment.labels || ["unlabeled"]
-
-      if (config.allowNewTags) {
-        for (const tag of tags) {
-          await insertIfNotExists(db, "tags", tag)
-        }
-      }
-
-      if (config.allowNewLabels) {
-        for (const label of labels) {
-          await insertIfNotExists(db, "labels", label)
-        }
-      }
-    }
-
-    if (config.allowNewCategories && parsed.data.programType) {
-      await insertIfNotExists(db, "categories", parsed.data.programType)
-    }
+    // Use program_type as both tag and label
+    const programType = parsed.data.programType || "other"
+    const tags = [programType]
+    const labels = [programType]
 
     const programData = {
       program_name: parsed.data.programName,
       website: parsed.data.website,
-      program_type: parsed.data.programType || null,
+      program_type: programType,
       financial_support: parsed.data.financialSupport || null,
       program_length: parsed.data.programLength || null,
       location: parsed.data.location || null,
@@ -179,18 +148,18 @@ export async function onSubmitToolAction(
       labels,
     }
 
-    console.log("Inserting program data")
-    const { error } = await db.from("products").insert([programData]).select()
+    console.log("Inserting program data:", programData)
+    const { data: insertedData, error } = await db.from("products").insert([programData]).select()
 
     if (error) {
       console.error(`Error inserting program data: ${error.message}`)
       throw new Error(error.message)
     }
 
+    console.log("Program data successfully inserted:", insertedData)
+
     revalidatePath("/")
     revalidateTag("program-filters")
-
-    console.log("Program data successfully inserted")
 
     return { message: "Program submitted successfully", issues: [] }
   } catch (error) {

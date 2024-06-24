@@ -6,8 +6,6 @@ import {
   ArrowLeft,
   Blocks,
   ExternalLink,
-  Hash,
-  Tag,
 } from "lucide-react"
 
 import { cn } from "@/lib/utils"
@@ -24,20 +22,18 @@ interface Product {
   created_at: string
   program_name: string
   website: string
-  program_type: string
-  financial_support: string
-  program_length: string
-  location: string
-  focus_area: string
+  program_type: string | null
+  financial_support: string | null
+  program_length: string | null
+  location: string | null
+  focus_area: string | null
   target_stage: string[]
-  punchline: string
-  description: string
-  logo_src: string
+  punchline: string | null
+  description: string | null
+  logo_src: string | null
   user_id: string
-  tags: string[]
   view_count: number
   approved: boolean
-  labels: string[]
   featured: boolean
 }
 
@@ -55,16 +51,12 @@ export const ProductDetails = ({ product }: { product: Product }) => (
             </BreadcrumbItem>
           </Breadcrumb>
           <CardTitle className="text-6xl tracking-tighter font-extrabold text-neutral-900 dark:text-neutral-200">
-            {product.punchline}
+            {product.punchline || product.program_name}
           </CardTitle>
-          <CardDescription className="md:text-xl text-lg tracking-tight text-neutral-800 text-balance dark:text-neutral-400 flex gap-2 items-center ">
-            <Blocks className="stroke-1 size-8" />{" "}
-            <span className="flex-wrap">{product.program_type}</span>
-          </CardDescription>
-          {product.tags.length >= 1 && (
+          {product.program_type && (
             <CardDescription className="md:text-xl text-lg tracking-tight text-neutral-800 text-balance dark:text-neutral-400 flex gap-2 items-center ">
-              <Tag className="stroke-1 size-8" />{" "}
-              <span className="flex-wrap">{product.tags.join(", ")}</span>
+              <Blocks className="stroke-1 size-8" />{" "}
+              <span className="flex-wrap">{product.program_type}</span>
             </CardDescription>
           )}
 
@@ -82,46 +74,47 @@ export const ProductDetails = ({ product }: { product: Product }) => (
             "bg-white dark:bg-[#1E1E1E]  shadow-[0_0_0_1px_rgba(0,0,0,0.1)_inset,0_0.5px_0.5px_rgba(0,0,0,0.05)_inset,0_-0.5px_0.5px_rgba(0,0,0,0.05)_inset,0_1px_2px_rgba(0,0,0,0.1)] dark:shadow-[0_0_0_0.5px_rgba(255,255,255,0.06)_inset,0_0.5px_0.5px_rgba(255,255,255,0.1)_inset,0_-0.5px_0.5px_rgba(255,255,255,0.1)_inset,0_0.5px_1px_rgba(0,0,0,0.3),0_1px_2px_rgba(0,0,0,0.4)]"
           )}
         >
-          <div className="w-full p-1 md:p-3 rounded-[28px] md:rounded-[36px] bg-[#3d3d3d]">
-            <img
-              className="w-full h-full rounded-3xl object-cover"
-              src={product.logo_src}
-              alt={`${product.program_name} image`}
-            />
-          </div>
-          <CardDescription className="text-2xl tracking-tight leading-tight text-neutral-800 text-balance dark:text-neutral-400">
-            {product.description}
-          </CardDescription>
+          {product.logo_src && (
+            <div className="w-full p-1 md:p-3 rounded-[28px] md:rounded-[36px] bg-[#3d3d3d]">
+              <img
+                className="w-full h-full rounded-3xl object-cover"
+                src={product.logo_src}
+                alt={`${product.program_name} image`}
+              />
+            </div>
+          )}
+          {product.description && (
+            <CardDescription className="text-2xl tracking-tight leading-tight text-neutral-800 text-balance dark:text-neutral-400">
+              {product.description}
+            </CardDescription>
+          )}
 
           <div className="space-y-4">
-            <CardDescription className="text-xl tracking-tight text-neutral-800 dark:text-neutral-400">
-              <strong>Financial Support:</strong> {product.financial_support}
-            </CardDescription>
-            <CardDescription className="text-xl tracking-tight text-neutral-800 dark:text-neutral-400">
-              <strong>Program Length:</strong> {product.program_length}
-            </CardDescription>
-            <CardDescription className="text-xl tracking-tight text-neutral-800 dark:text-neutral-400">
-              <strong>Location:</strong> {product.location}
-            </CardDescription>
-            <CardDescription className="text-xl tracking-tight text-neutral-800 dark:text-neutral-400">
-              <strong>Focus Area:</strong> {product.focus_area}
-            </CardDescription>
-            <CardDescription className="text-xl tracking-tight text-neutral-800 dark:text-neutral-400">
-              <strong>Target Stage:</strong> {product.target_stage.join(", ")}
-            </CardDescription>
-          </div>
-
-          <div className="md:text-xl sm:text-lg tracking-tight text-neutral-800 text-balance dark:text-neutral-400 flex gap-2 items-center flex-wrap text-sm">
-            {product.labels[0] !== "unlabeled" &&
-              product.labels.map((label, index) => (
-                <Link
-                  href={`/products?label=${label}`}
-                  key={index}
-                  className="flex-wrap flex gap-1"
-                >
-                  <Hash className="stroke-1 size-4" /> <span>{label}</span>
-                </Link>
-              ))}
+            {product.financial_support && (
+              <CardDescription className="text-xl tracking-tight text-neutral-800 dark:text-neutral-400">
+                <strong>Financial Support:</strong> {product.financial_support}
+              </CardDescription>
+            )}
+            {product.program_length && (
+              <CardDescription className="text-xl tracking-tight text-neutral-800 dark:text-neutral-400">
+                <strong>Program Length:</strong> {product.program_length}
+              </CardDescription>
+            )}
+            {product.location && (
+              <CardDescription className="text-xl tracking-tight text-neutral-800 dark:text-neutral-400">
+                <strong>Location:</strong> {product.location}
+              </CardDescription>
+            )}
+            {product.focus_area && (
+              <CardDescription className="text-xl tracking-tight text-neutral-800 dark:text-neutral-400">
+                <strong>Focus Area:</strong> {product.focus_area}
+              </CardDescription>
+            )}
+            {product.target_stage && product.target_stage.length > 0 && (
+              <CardDescription className="text-xl tracking-tight text-neutral-800 dark:text-neutral-400">
+                <strong>Target Stage:</strong> {product.target_stage.join(", ")}
+              </CardDescription>
+            )}
           </div>
 
           {product.website && (

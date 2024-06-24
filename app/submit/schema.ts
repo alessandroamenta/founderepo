@@ -13,6 +13,8 @@ export const schema = z.object({
   description: z.string().trim().optional(),
   images: z.any().optional(),
   logo_src: z.any().optional(),
+  tags: z.array(z.string()).optional(),
+  labels: z.array(z.string()).optional(),
 })
 
 export const enrichmentSchema = z.object({
