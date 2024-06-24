@@ -96,16 +96,30 @@ export async function onSubmitToolAction(
 ): Promise<FormState> {
   console.log("onSubmitToolAction called");
   const db = createClient();
-  const data = Object.fromEntries(formData.entries());
-  console.log("Form data:", data);
+  
+  // Create a new object to store the parsed form data
+  const parsedData: Record<string, any> = {};
 
-  const parsed = schema.safeParse(data);
+  // Iterate through all form entries
+  for (const [key, value] of formData.entries()) {
+    if (key === 'targetStage') {
+      // If the key is 'targetStage', get all values as an array
+      parsedData[key] = formData.getAll(key);
+    } else {
+      // For other keys, just use the single value
+      parsedData[key] = value;
+    }
+  }
+
+  console.log("Parsed form data:", parsedData);
+  
+  const parsed = schema.safeParse(parsedData);
 
   if (!parsed.success) {
     console.error("Form validation failed", parsed.error);
     const fields: Record<string, string> = {}
-    for (const key of Object.keys(data)) {
-      fields[key] = data[key].toString()
+    for (const key of Object.keys(parsedData)) {
+      fields[key] = parsedData[key].toString()
     }
     return {
       message: "Invalid form data",
@@ -124,11 +138,10 @@ export async function onSubmitToolAction(
 
     let logoUrl = ""
     const logoFile = formData.get("images") as File
-    if (logoFile) {
+    if (logoFile && logoFile instanceof File) {
       logoUrl = await uploadLogoFile(db, logoFile, parsed.data.programName)
     }
 
-    // Use program_type as both tag and label
     const programType = parsed.data.programType || "other"
     const tags = [programType]
     const labels = [programType]

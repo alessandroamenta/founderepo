@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
+import { Controller } from "react-hook-form";
 import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { X } from "lucide-react"
@@ -122,6 +123,14 @@ export const SubmitTool = () => {
           form.handleSubmit(async (data) => {
             let formData = new FormData(formRef.current!)
             const logoFile = form.getValues("images")
+
+            for (const [key, value] of Object.entries(data)) {
+              if (key === 'targetStage' && Array.isArray(value)) {
+                value.forEach(item => formData.append('targetStage', item));
+              } else if (value !== undefined) {
+                formData.set(key, value);
+              }
+            }
             if (logoFile.length > 0) {
               formData.set("images", logoFile[0])
             }
@@ -166,7 +175,7 @@ export const SubmitTool = () => {
   render={({ field }) => (
     <FormItem>
       <FormLabel>Type of program</FormLabel>
-      <Select onValueChange={field.onChange} defaultValue={field.value}>
+      <Select onValueChange={field.onChange} defaultValue={field.value || programTypes[0].value}>
         <FormControl>
           <SelectTrigger>
             <SelectValue placeholder="Select program type" />
@@ -238,42 +247,34 @@ export const SubmitTool = () => {
           )}
         />
 
-<FormField
-  control={form.control}
+<Controller
   name="targetStage"
-  render={() => (
+  control={form.control}
+  defaultValue={[]}
+  render={({ field }) => (
     <FormItem>
       <FormLabel>Target stage</FormLabel>
       <div className="space-y-2">
         {targetStages.map((stage) => (
-          <FormField
+          <FormItem
             key={stage.value}
-            control={form.control}
-            name="targetStage"
-            render={({ field }) => {
-              return (
-                <FormItem
-                  key={stage.value}
-                  className="flex flex-row items-start space-x-3 space-y-0"
-                >
-                  <FormControl>
-                    <Checkbox
-                      checked={field.value?.includes(stage.value)}
-                      onCheckedChange={(checked) => {
-                        const updatedValue = checked
-                          ? [...field.value, stage.value]
-                          : field.value?.filter((value) => value !== stage.value);
-                        field.onChange(updatedValue);
-                      }}
-                    />
-                  </FormControl>
-                  <FormLabel className="font-normal">
-                    {stage.label}
-                  </FormLabel>
-                </FormItem>
-              )
-            }}
-          />
+            className="flex flex-row items-start space-x-3 space-y-0"
+          >
+            <FormControl>
+              <Checkbox
+                checked={field.value.includes(stage.value)}
+                onCheckedChange={(checked) => {
+                  const updatedValue = checked
+                    ? [...field.value, stage.value]
+                    : field.value.filter((value) => value !== stage.value);
+                  field.onChange(updatedValue);
+                }}
+              />
+            </FormControl>
+            <FormLabel className="font-normal">
+              {stage.label}
+            </FormLabel>
+          </FormItem>
         ))}
       </div>
       <FormMessage />
