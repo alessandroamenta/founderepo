@@ -5,12 +5,8 @@ import Link from "next/link"
 import {
   ArrowLeft,
   Blocks,
-  Edit2Icon,
   ExternalLink,
   Hash,
-  HeartIcon,
-  MessageSquareTextIcon,
-  Sparkles,
   Tag,
 } from "lucide-react"
 
@@ -26,11 +22,14 @@ import { CardDescription, CardTitle } from "@/components/ui/card"
 interface Product {
   id: string
   created_at: string
-  full_name: string
-  email: string
-  twitter_handle: string
-  product_website: string
-  codename: string
+  program_name: string
+  website: string
+  program_type: string
+  financial_support: string
+  program_length: string
+  location: string
+  focus_area: string
+  target_stage: string[]
   punchline: string
   description: string
   logo_src: string
@@ -39,7 +38,7 @@ interface Product {
   view_count: number
   approved: boolean
   labels: string[]
-  categories: string
+  featured: boolean
 }
 
 export const ProductDetails = ({ product }: { product: Product }) => (
@@ -49,9 +48,9 @@ export const ProductDetails = ({ product }: { product: Product }) => (
         <div className="space-y-6 col-span-6 md:col-span-5 md:mt-12 z-10">
           <Breadcrumb>
             <BreadcrumbItem>
-              <BreadcrumbLink href="/">Products</BreadcrumbLink>/
+              <BreadcrumbLink href="/">Programs</BreadcrumbLink>/
               <BreadcrumbLink href={`/products/${product.id}`}>
-                {product.codename.substring(0, 20)}
+                {product.program_name.substring(0, 20)}
               </BreadcrumbLink>
             </BreadcrumbItem>
           </Breadcrumb>
@@ -60,7 +59,7 @@ export const ProductDetails = ({ product }: { product: Product }) => (
           </CardTitle>
           <CardDescription className="md:text-xl text-lg tracking-tight text-neutral-800 text-balance dark:text-neutral-400 flex gap-2 items-center ">
             <Blocks className="stroke-1 size-8" />{" "}
-            <span className="flex-wrap">{product.categories}</span>
+            <span className="flex-wrap">{product.program_type}</span>
           </CardDescription>
           {product.tags.length >= 1 && (
             <CardDescription className="md:text-xl text-lg tracking-tight text-neutral-800 text-balance dark:text-neutral-400 flex gap-2 items-center ">
@@ -73,7 +72,7 @@ export const ProductDetails = ({ product }: { product: Product }) => (
             href={`/products`}
             className="py-4 md:flex items-center text-2xl font-semibold text-yellow-500  z-10 hidden"
           >
-            <ArrowLeft className="mr-2" /> Back to all products
+            <ArrowLeft className="mr-2" /> Back to all programs
           </Link>
         </div>
 
@@ -87,12 +86,30 @@ export const ProductDetails = ({ product }: { product: Product }) => (
             <img
               className="w-full h-full rounded-3xl object-cover"
               src={product.logo_src}
-              alt={`${product.full_name} image`}
+              alt={`${product.program_name} image`}
             />
           </div>
           <CardDescription className="text-2xl tracking-tight leading-tight text-neutral-800 text-balance dark:text-neutral-400">
             {product.description}
           </CardDescription>
+
+          <div className="space-y-4">
+            <CardDescription className="text-xl tracking-tight text-neutral-800 dark:text-neutral-400">
+              <strong>Financial Support:</strong> {product.financial_support}
+            </CardDescription>
+            <CardDescription className="text-xl tracking-tight text-neutral-800 dark:text-neutral-400">
+              <strong>Program Length:</strong> {product.program_length}
+            </CardDescription>
+            <CardDescription className="text-xl tracking-tight text-neutral-800 dark:text-neutral-400">
+              <strong>Location:</strong> {product.location}
+            </CardDescription>
+            <CardDescription className="text-xl tracking-tight text-neutral-800 dark:text-neutral-400">
+              <strong>Focus Area:</strong> {product.focus_area}
+            </CardDescription>
+            <CardDescription className="text-xl tracking-tight text-neutral-800 dark:text-neutral-400">
+              <strong>Target Stage:</strong> {product.target_stage.join(", ")}
+            </CardDescription>
+          </div>
 
           <div className="md:text-xl sm:text-lg tracking-tight text-neutral-800 text-balance dark:text-neutral-400 flex gap-2 items-center flex-wrap text-sm">
             {product.labels[0] !== "unlabeled" &&
@@ -107,7 +124,7 @@ export const ProductDetails = ({ product }: { product: Product }) => (
               ))}
           </div>
 
-          {product.product_website && (
+          {product.website && (
             <Button
               asChild
               variant="secondary"
@@ -115,7 +132,7 @@ export const ProductDetails = ({ product }: { product: Product }) => (
               className="w-full flex items-center justify-center py-6 text-lg rounded-[44px]"
             >
               <a
-                href={product.product_website}
+                href={product.website}
                 target="_blank"
                 rel="noreferrer noopener"
               >
@@ -131,7 +148,7 @@ export const ProductDetails = ({ product }: { product: Product }) => (
       href={`/`}
       className="py-4 md:hidden items-center text-2xl font-semibold text-yellow-500  z-10 w-full flex"
     >
-      <ArrowLeft className="mr-2" /> Back to all productss
+      <ArrowLeft className="mr-2" /> Back to all programs
     </Link>
     <div className="absolute top-36 md:top-0 left-[-10%] right-0 h-[400px] w-[300px]  md:h-[500px] md:w-[500px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(255,235,59,.15),rgba(255,255,255,0))]"></div>
   </div>

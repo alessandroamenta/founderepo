@@ -19,6 +19,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { Checkbox } from "@/components/ui/checkbox"
 import {
   Select,
   SelectContent,
@@ -36,18 +37,21 @@ import { schema } from "./schema"
 // To trigger async toast
 const p = () => new Promise((resolve) => setTimeout(() => resolve(""), 900))
 
-const categories = [
-  { label: "Boilerplate", value: "boilerplate" },
-  { label: "Analytics", value: "analytics" },
-  { label: "Marketing Tools", value: "marketing-tools" },
-  { label: "Developer Tools", value: "developer-tools" },
-  { label: "E-commerce", value: "e-commerce" },
-  { label: "Productivity", value: "productivity" },
-  { label: "Design Tools", value: "design-tools" },
-  { label: "Fintech", value: "fintech" },
-  { label: "Education", value: "education" },
-  { label: "SaaS", value: "saas" },
+const programTypes = [
   { label: "Accelerator", value: "accelerator" },
+  { label: "Incubator", value: "incubator" },
+  { label: "Venture builders/startup studio", value: "venture_builders_startup_studio" },
+  { label: "Fellowships/Grants", value: "fellowships_grants" },
+  { label: "Other", value: "other" },
+]
+
+const targetStages = [
+  { label: "Day 0", value: "ideation_stage" },
+  { label: "Pre-Seed", value: "pre_seed" },
+  { label: "Pre-Seed to Seed", value: "pre-seed_to_seed" },
+  { label: "Series A", value: "series_a" },
+  { label: "Series B", value: "series_b" },
+  { label: "Late-Stage", value: "late_stage" },
 ]
 
 export const SubmitTool = () => {
@@ -61,18 +65,20 @@ export const SubmitTool = () => {
 
   const form = useForm<z.output<typeof schema>>({
     resolver: zodResolver(schema),
-    mode: "onChange", // Enable validation on change to get real-time validation state
+    mode: "onChange",
     defaultValues: {
-      fullName: "",
-      email: "",
-      twitterHandle: "",
-      productWebsite: "",
-      codename: "",
+      programName: "",
+      website: "",
+      programType: "",
+      financialSupport: "",
+      programLength: "",
+      location: "",
+      focusArea: "",
+      targetStage: [],
       punchline: "",
       description: "",
       images: [],
       logo_src: "",
-      categories: "",
       ...(state?.fields ?? {}),
     },
   })
@@ -126,74 +132,16 @@ export const SubmitTool = () => {
         }}
       >
         <GradientHeading size="xs">
-          Let's start with your personal deets
-        </GradientHeading>
-        <div className="flex flex-wrap gap-1 md:gap-2">
-          <FormField
-            control={form.control}
-            name="fullName"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Full name</FormLabel>
-                <FormControl>
-                  <Input placeholder="Full name" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email address</FormLabel>
-                <FormControl>
-                  <Input type="email" placeholder="Email address" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="twitterHandle"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Your Twitter handle</FormLabel>
-                <FormControl>
-                  <Input placeholder="Your Twitter handle" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="productWebsite"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Product website</FormLabel>
-                <FormControl>
-                  <Input placeholder="Your product url" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-
-        <GradientHeading size="xs">
-          Tell us more about your product
+          Tell us about your program
         </GradientHeading>
         <FormField
           control={form.control}
-          name="codename"
+          name="programName"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Your product's name</FormLabel>
+              <FormLabel>Name of the program</FormLabel>
               <FormControl>
-                <Input placeholder="Your product's codename" {...field} />
+                <Input placeholder="YC, Techstars, Plug and Play..." {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -201,12 +149,147 @@ export const SubmitTool = () => {
         />
         <FormField
           control={form.control}
+          name="website"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Website</FormLabel>
+              <FormControl>
+                <Input placeholder="https://www.ycombinator.com/" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="programType"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Type of program</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select program type" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {programTypes.map((type) => (
+                    <SelectItem key={type.value} value={type.value}>
+                      {type.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="financialSupport"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Financial support</FormLabel>
+              <FormControl>
+                <Input placeholder="YC does 500k at 7% equity" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="programLength"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Program length</FormLabel>
+              <FormControl>
+                <Input placeholder="3 months for YC" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="location"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Location</FormLabel>
+              <FormControl>
+                <Input placeholder="If in person where? Is remote also..." {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="focusArea"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Focus area</FormLabel>
+              <FormControl>
+                <Input placeholder="AI, climate tech, tech in general" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+<FormField
+  control={form.control}
+  name="targetStage"
+  render={() => (
+    <FormItem>
+      <FormLabel>Target stage</FormLabel>
+      <div className="space-y-2">
+        {targetStages.map((stage) => (
+          <FormField
+            key={stage.value}
+            control={form.control}
+            name="targetStage"
+            render={({ field }) => {
+              return (
+                <FormItem
+                  key={stage.value}
+                  className="flex flex-row items-start space-x-3 space-y-0"
+                >
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value?.includes(stage.value) ?? false}
+                      onCheckedChange={(checked) => {
+                        const updatedValue = field.value ?? [];
+                        return checked
+                          ? field.onChange([...updatedValue, stage.value])
+                          : field.onChange(
+                              updatedValue.filter(
+                                (value) => value !== stage.value
+                              )
+                            )
+                      }}
+                    />
+                  </FormControl>
+                  <FormLabel className="font-normal">
+                    {stage.label}
+                  </FormLabel>
+                </FormItem>
+              )
+            }}
+          />
+        ))}
+      </div>
+      <FormMessage />
+    </FormItem>
+  )}
+/>
+        <FormField
+          control={form.control}
           name="punchline"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Your product's punchline (&lt;10 words)</FormLabel>
+              <FormLabel>Programs's punchline (&lt;10 words)</FormLabel>
               <FormControl>
-                <Input placeholder="Your product's punchline" {...field} />
+                <Input placeholder="Program's punchline" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -243,46 +326,12 @@ export const SubmitTool = () => {
             </div>
           )}
         />
-        <FormField
-          control={form.control}
-          name="categories"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Product Category</FormLabel>
-              <Select
-                onValueChange={field.onChange}
-                defaultValue={field.value}
-                {...field}
-              >
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {categories.map((category) => (
-                    <SelectItem
-                      key={category.label}
-                      value={(category.value ?? "").toLowerCase()}
-                    >
-                      {category.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <FormDescription>
-                This is the categories that will be used in the dashboard.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
 
-        {isValid && (
-          <StyledButton disabled={loading} type="submit">
-            Submit
-          </StyledButton>
-        )}
+      <StyledButton 
+        type="submit"
+      >
+        Submit
+      </StyledButton>
       </form>
     </Form>
   )

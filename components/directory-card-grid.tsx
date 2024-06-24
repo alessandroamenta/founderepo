@@ -11,11 +11,14 @@ import { ResourceCard } from "./directory-product-card"
 interface Product {
   id: string
   created_at: string
-  full_name: string
-  email: string
-  twitter_handle: string
-  product_website: string
-  codename: string
+  program_name: string
+  website: string
+  program_type: string
+  financial_support: string
+  program_length: string
+  location: string
+  focus_area: string
+  target_stage: string[]
   punchline: string
   description: string
   logo_src: string
@@ -24,7 +27,7 @@ interface Product {
   view_count: number
   approved: boolean
   labels: string[]
-  categories: string
+  featured: boolean
 }
 
 export interface SEOCardGridProps {

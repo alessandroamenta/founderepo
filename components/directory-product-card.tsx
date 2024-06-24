@@ -39,11 +39,14 @@ export const getLastPathSegment = (url: string, maxLength: number): string => {
 interface Product {
   id: string
   created_at: string
-  full_name: string
-  email: string
-  twitter_handle: string
-  product_website: string
-  codename: string
+  program_name: string
+  website: string
+  program_type: string
+  financial_support: string
+  program_length: string
+  location: string
+  focus_area: string
+  target_stage: string[]
   punchline: string
   description: string
   logo_src: string
@@ -52,7 +55,6 @@ interface Product {
   view_count: number
   approved: boolean
   labels: string[]
-  categories: string
 }
 
 export const ResourceCard: React.FC<{
@@ -79,7 +81,7 @@ export const ResourceCard: React.FC<{
       layout
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="group relative  break-inside-avoid w-full"
+      className="group relative break-inside-avoid w-full"
     >
       <Link
         href={`/products/${data.id}`}
@@ -91,51 +93,62 @@ export const ResourceCard: React.FC<{
           <MinimalCard
             className={cn(
               optimisticResource.view_count > 350
-                ? " text-neutral-900 hover:bg-[#666BFA] "
+                ? "text-neutral-900 hover:bg-[#666BFA]"
                 : "",
               "w-full"
             )}
           >
             {data.logo_src ? (
-              <MinimalCardImage alt={data.codename} src={data.logo_src} />
+              <MinimalCardImage alt={data.program_name} src={data.logo_src} />
             ) : null}
 
             <MinimalCardTitle
               className={cn(
-                " font-semibold mb-0.5",
-                optimisticResource.view_count > 100 ? " text-neutral-800" : ""
+                "font-semibold mb-0.5",
+                optimisticResource.view_count > 100 ? "text-neutral-800" : ""
               )}
             >
-              {data.codename.substring(0, 30)}
+              {data.program_name.substring(0, 30)}
             </MinimalCardTitle>
             <motion.p
               initial={{ opacity: 0, y: 5 }}
               animate={{ opacity: 1, y: 0 }}
               className="text-xs leading-3 mb-2 text-neutral-500"
             >
-              {getLastPathSegment(data.product_website, 10)}
+              {getLastPathSegment(data.website, 10)}
             </motion.p>
             <MinimalCardDescription
               className={cn(
                 "text-sm",
-                optimisticResource.view_count > 100 ? " text-neutral-700" : ""
+                optimisticResource.view_count > 100 ? "text-neutral-700" : ""
               )}
             >
               {trim ? `${data.description.slice(0, 82)}...` : data.description}
             </MinimalCardDescription>
 
-            <MinimalCardContent />
+            <MinimalCardContent>
+              <div className="flex flex-wrap gap-1 mt-2">
+                {data.target_stage.map((stage, index) => (
+                  <span key={index} className="text-xs bg-gray-200 rounded-full px-2 py-1">
+                    {stage}
+                  </span>
+                ))}
+              </div>
+            </MinimalCardContent>
 
             <MinimalCardFooter>
-              <div
-                className={cn(
-                  "p-1 py-1.5 px-1.5 rounded-md text-neutral-500 flex items-center gap-1  absolute bottom-2 right-2 rounded-br-[16px]",
-                  optimisticResource.view_count > 100 ? " text-neutral-800" : ""
-                )}
-              >
-                <p className="flex items-center gap-1 tracking-tight text-neutral pr-1 text-xs">
-                  {optimisticResource.view_count || data.view_count}
-                </p>
+              <div className="flex justify-between items-center w-full">
+                <span className="text-xs text-neutral-500">{data.program_type}</span>
+                <div
+                  className={cn(
+                    "p-1 py-1.5 px-1.5 rounded-md text-neutral-500 flex items-center gap-1",
+                    optimisticResource.view_count > 100 ? "text-neutral-800" : ""
+                  )}
+                >
+                  <p className="flex items-center gap-1 tracking-tight text-neutral pr-1 text-xs">
+                    {optimisticResource.view_count || data.view_count}
+                  </p>
+                </div>
               </div>
             </MinimalCardFooter>
           </MinimalCard>

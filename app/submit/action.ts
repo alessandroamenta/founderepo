@@ -122,18 +122,18 @@ export async function onSubmitToolAction(
     let logoUrl = ""
     const logoFile = formData.get("images") as File
     if (logoFile) {
-      logoUrl = await uploadLogoFile(db, logoFile, parsed.data.codename)
+      logoUrl = await uploadLogoFile(db, logoFile, parsed.data.programName)
     }
 
-    let tags: Enrichment["tags"] = []
-    let labels: Enrichment["labels"] = ["unlabeled"]
+    let tags: string[] = []
+    let labels: string[] = ["unlabeled"]
 
     if (config.aiEnrichmentEnabled) {
       console.log("Generating AI enrichment data")
       const enrichmentPrompt = getAIEnrichmentPrompt(
-        parsed.data.codename,
-        parsed.data.categories,
-        parsed.data.description
+        parsed.data.programName,
+        parsed.data.programType || "",
+        parsed.data.description || ""
       )
       const { object: enrichment } = await generateObject({
         model: config.aiModel,
@@ -141,8 +141,8 @@ export async function onSubmitToolAction(
         prompt: enrichmentPrompt,
       })
 
-      tags = enrichment.tags
-      labels = enrichment.labels ?? ["unlabeled"]
+      tags = enrichment.tags || []
+      labels = enrichment.labels || ["unlabeled"]
 
       if (config.allowNewTags) {
         for (const tag of tags) {
@@ -157,40 +157,42 @@ export async function onSubmitToolAction(
       }
     }
 
-    if (config.allowNewCategories) {
-      await insertIfNotExists(db, "categories", parsed.data.categories)
+    if (config.allowNewCategories && parsed.data.programType) {
+      await insertIfNotExists(db, "categories", parsed.data.programType)
     }
 
-    const productData = {
-      full_name: parsed.data.fullName,
-      email: parsed.data.email,
-      twitter_handle: parsed.data.twitterHandle,
-      product_website: parsed.data.productWebsite,
-      codename: parsed.data.codename,
-      punchline: parsed.data.punchline,
-      description: parsed.data.description,
-      logo_src: logoUrl,
-      categories: parsed.data.categories,
+    const programData = {
+      program_name: parsed.data.programName,
+      website: parsed.data.website,
+      program_type: parsed.data.programType || null,
+      financial_support: parsed.data.financialSupport || null,
+      program_length: parsed.data.programLength || null,
+      location: parsed.data.location || null,
+      focus_area: parsed.data.focusArea || null,
+      target_stage: parsed.data.targetStage || [],
+      punchline: parsed.data.punchline || null,
+      description: parsed.data.description || null,
+      logo_src: logoUrl || null,
       user_id: user.id,
       approved: true,
       tags,
       labels,
     }
 
-    console.log("Inserting product data")
-    const { error } = await db.from("products").insert([productData]).select()
+    console.log("Inserting program data")
+    const { error } = await db.from("products").insert([programData]).select()
 
     if (error) {
-      console.error(`Error inserting product data: ${error.message}`)
+      console.error(`Error inserting program data: ${error.message}`)
       throw new Error(error.message)
     }
 
     revalidatePath("/")
-    revalidateTag("product-filters")
+    revalidateTag("program-filters")
 
-    console.log("Product data successfully inserted")
+    console.log("Program data successfully inserted")
 
-    return { message: "Tool submitted successfully", issues: [] }
+    return { message: "Program submitted successfully", issues: [] }
   } catch (error) {
     console.error(
       `Submission failed: ${
