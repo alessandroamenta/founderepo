@@ -40,7 +40,7 @@ const p = () => new Promise((resolve) => setTimeout(() => resolve(""), 900))
 const programTypes = [
   { label: "Accelerator", value: "accelerator" },
   { label: "Incubator", value: "incubator" },
-  { label: "Venture builders/startup studio", value: "venture_builders_startup_studio" },
+  { label: "Venture builder/startup studio", value: "venture_builder_startup_studio" },
   { label: "Fellowships/Grants", value: "fellowships_grants" },
   { label: "Other", value: "other" },
 ]
@@ -160,30 +160,31 @@ export const SubmitTool = () => {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="programType"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Type of program</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select program type" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {programTypes.map((type) => (
-                    <SelectItem key={type.value} value={type.value}>
-                      {type.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+<FormField
+  control={form.control}
+  name="programType"
+  render={({ field }) => (
+    <FormItem>
+      <FormLabel>Type of program</FormLabel>
+      <Select onValueChange={field.onChange} defaultValue={field.value}>
+        <FormControl>
+          <SelectTrigger>
+            <SelectValue placeholder="Select program type" />
+          </SelectTrigger>
+        </FormControl>
+        <SelectContent>
+          {programTypes.map((type) => (
+            <SelectItem key={type.value} value={type.value}>
+              {type.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+      <FormMessage />
+    </FormItem>
+  )}
+/>
+
         <FormField
           control={form.control}
           name="financialSupport"
@@ -236,6 +237,7 @@ export const SubmitTool = () => {
             </FormItem>
           )}
         />
+
 <FormField
   control={form.control}
   name="targetStage"
@@ -256,16 +258,12 @@ export const SubmitTool = () => {
                 >
                   <FormControl>
                     <Checkbox
-                      checked={field.value?.includes(stage.value) ?? false}
+                      checked={field.value?.includes(stage.value)}
                       onCheckedChange={(checked) => {
-                        const updatedValue = field.value ?? [];
-                        return checked
-                          ? field.onChange([...updatedValue, stage.value])
-                          : field.onChange(
-                              updatedValue.filter(
-                                (value) => value !== stage.value
-                              )
-                            )
+                        const updatedValue = checked
+                          ? [...field.value, stage.value]
+                          : field.value?.filter((value) => value !== stage.value);
+                        field.onChange(updatedValue);
                       }}
                     />
                   </FormControl>

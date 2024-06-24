@@ -94,12 +94,15 @@ export async function onSubmitToolAction(
   prevState: FormState,
   formData: FormData
 ): Promise<FormState> {
-  const db = createClient()
-  const data = Object.fromEntries(formData.entries())
-  const parsed = schema.safeParse(data)
+  console.log("onSubmitToolAction called");
+  const db = createClient();
+  const data = Object.fromEntries(formData.entries());
+  console.log("Form data:", data);
+
+  const parsed = schema.safeParse(data);
 
   if (!parsed.success) {
-    console.error("Form validation failed")
+    console.error("Form validation failed", parsed.error);
     const fields: Record<string, string> = {}
     for (const key of Object.keys(data)) {
       fields[key] = data[key].toString()
@@ -112,12 +115,12 @@ export async function onSubmitToolAction(
   }
 
   try {
-    const { data: authData, error: authError } = await db.auth.getUser()
+    const { data: authData, error: authError } = await db.auth.getUser();
     if (authError || !authData.user) {
-      console.error("User authentication failed")
-      throw new Error("User authentication failed")
+      console.error("User authentication failed", authError);
+      throw new Error("User authentication failed");
     }
-    const user = authData.user
+    const user = authData.user;
 
     let logoUrl = ""
     const logoFile = formData.get("images") as File
@@ -133,12 +136,12 @@ export async function onSubmitToolAction(
     const programData = {
       program_name: parsed.data.programName,
       website: parsed.data.website,
-      program_type: programType,
+      program_type: parsed.data.programType,
+      target_stage: parsed.data.targetStage,
       financial_support: parsed.data.financialSupport || null,
       program_length: parsed.data.programLength || null,
       location: parsed.data.location || null,
       focus_area: parsed.data.focusArea || null,
-      target_stage: parsed.data.targetStage || [],
       punchline: parsed.data.punchline || null,
       description: parsed.data.description || null,
       logo_src: logoUrl || null,
@@ -148,15 +151,18 @@ export async function onSubmitToolAction(
       labels,
     }
 
-    console.log("Inserting program data:", programData)
-    const { data: insertedData, error } = await db.from("products").insert([programData]).select()
+    console.log("Inserting program data:", programData);
+    const { data: insertedData, error } = await db
+      .from("products")
+      .insert([programData])
+      .select();
 
     if (error) {
-      console.error(`Error inserting program data: ${error.message}`)
-      throw new Error(error.message)
+      console.error(`Error inserting program data:`, error);
+      throw new Error(error.message);
     }
 
-    console.log("Program data successfully inserted:", insertedData)
+    console.log("Program data successfully inserted:", insertedData);
 
     revalidatePath("/")
     revalidateTag("program-filters")

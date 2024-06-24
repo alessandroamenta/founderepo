@@ -8,8 +8,8 @@ import { createClient } from "@/db/supabase/server"
 export async function getFilters() {
   const db = createClient()
   const { data: categoriesData, error: categoriesError } = await db
-    .from("products")
-    .select("categories")
+    .from("categories")
+    .select("name")
 
   const { data: labelsData, error: labelsError } = await db
     .from("products")
@@ -30,7 +30,7 @@ export async function getFilters() {
   }
 
   return {
-    categories: categoriesData.map((item) => item.categories).filter(Boolean),
+    categories: categoriesData.map((item) => item.name).filter(Boolean),
     labels: labelsData.map((item) => item.labels).filter(Boolean),
     tags: tagsData.map((item) => item.tags).filter(Boolean),
   }

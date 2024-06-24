@@ -257,6 +257,7 @@ function ProductNav({
   handleLinkClick,
   children,
 }: ProductNavProps) {
+  console.log("Categories:", categories);
   return (
     <div className="">
       <LogoAnimationLink />

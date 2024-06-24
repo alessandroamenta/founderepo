@@ -68,11 +68,8 @@ async function getFilters(): Promise<FilterData> {
   return { categories, labels, tags }
 }
 
-export const getCachedFilters = unstable_cache(
-  async (): Promise<FilterData> => {
-    const { categories, labels, tags } = await getFilters()
-    return { categories, labels, tags }
-  },
-  ["product-filters"],
-  { tags: [`product_filters`], revalidate: 9000 }
-)
+export const getCachedFilters = async (): Promise<FilterData> => {
+  // Directly call getFilters without caching
+  return await getFilters();
+}
+
