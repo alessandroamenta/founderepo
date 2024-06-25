@@ -39,20 +39,20 @@ import { schema } from "./schema"
 const p = () => new Promise((resolve) => setTimeout(() => resolve(""), 900))
 
 const programTypes = [
-  { label: "Accelerator", value: "accelerator" },
-  { label: "Incubator", value: "incubator" },
-  { label: "Venture builder/startup studio", value: "venture_builder_startup_studio" },
-  { label: "Fellowships/Grants", value: "fellowships_grants" },
-  { label: "Other", value: "other" },
+  { label: "Accelerator", value: "Accelerator" },
+  { label: "Incubator", value: "Incubator" },
+  { label: "Venture builder/startup studio", value: "Venture builder/startup studio" },
+  { label: "Fellowships/Grants", value: "Fellowships/Grants" },
+  { label: "Other", value: "Other" },
 ]
 
 const targetStages = [
-  { label: "Day 0", value: "ideation_stage" },
-  { label: "Pre-Seed", value: "pre_seed" },
-  { label: "Pre-Seed to Seed", value: "pre-seed_to_seed" },
-  { label: "Series A", value: "series_a" },
-  { label: "Series B", value: "series_b" },
-  { label: "Late-Stage", value: "late_stage" },
+  { label: "Day 0", value: "Day 0" },
+  { label: "Pre-Seed", value: "Pre-Seed" },
+  { label: "Pre-Seed to Seed", value: "Pre-Seed to Seed" },
+  { label: "Series A", value: "Series A" },
+  { label: "Series B", value: "Series B" },
+  { label: "Late-Stage", value: "Late-Stage" },
 ]
 
 export const SubmitTool = () => {
