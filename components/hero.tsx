@@ -24,24 +24,29 @@ export function Hero({ children }: { children?: React.ReactNode }) {
           </span>
         </div>
         <p className="mt-2 text-center text-muted-foreground text-sm md:text-base px-2">
-          We help founders who are starting out get into the startup bubbe. Fast.
+          We help founders who are starting out get into the startup bubble. Fast.
         </p>
       </div>
-      <div className="flex mt-4 mb-4 space-x-4">
-        <Button variant="secondary" asChild>
-          <Link href="#tally-open=mD1o7X&tally-emoji-text=👋&tally-emoji-animation=tada" className="flex items-center text-black">
-            <PlusIcon className="size-4 mr-1" /> Submit program
-          </Link>
-        </Button>
-        <a
-          href="https://x.com/nolansym"
-          target="_blank"
-          rel="noreferrer"
-          className="flex items-center"
-        >
-          <Twitter className="size-4 mr-1" />
-          updates
-        </a>
+      <div className="flex flex-col items-center mt-4 mb-4 space-y-4">
+        <p className="text-sm text-muted-foreground italic">
+          Know about or have been through a program that's not here?
+        </p>
+        <div className="flex space-x-4">
+          <Button variant="secondary" asChild>
+            <Link href="#tally-open=mD1o7X&tally-emoji-text=👋&tally-emoji-animation=tada" className="flex items-center text-black">
+              <PlusIcon className="size-4 mr-1" /> Submit
+            </Link>
+          </Button>
+          <a
+            href="https://x.com/nolansym"
+            target="_blank"
+            rel="noreferrer"
+            className="flex items-center"
+          >
+            <Twitter className="size-4 mr-1" />
+            updates
+          </a>
+        </div>
       </div>
       {children}
       <Script async src="https://tally.so/widgets/embed.js"></Script>
