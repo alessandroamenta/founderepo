@@ -474,7 +474,7 @@ To give your directory a unique look, create a custom color theme:
 
 Welcome to the cult! :)
 
-Follow the steps outlined in this README to deploy and customize your directory app. If you have any questions or run into issues, feel free to reach out for support on Twitter: [https://x.com/nolansym](https://x.com/nolansym)
+Follow the steps outlined in this README to deploy and customize your directory app. If you have any questions or run into issues, feel free to reach out for support on Twitter: [https://x.com/ale_amenta](https://x.com/ale_amenta)
 
 Cheers! Stoked to see what you build!
 
