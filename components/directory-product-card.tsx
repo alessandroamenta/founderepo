@@ -95,11 +95,17 @@ export const ResourceCard: React.FC<{
               optimisticResource.view_count > 350
                 ? "text-neutral-900 hover:bg-[#666BFA]"
                 : "",
-              "w-full"
+              "w-full transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-1 hover:scale-[1.02]"
             )}
           >
             {data.logo_src ? (
-              <MinimalCardImage alt={data.program_name} src={data.logo_src} />
+              <div className="overflow-hidden rounded-t-lg">
+                <MinimalCardImage 
+                  alt={data.program_name} 
+                  src={data.logo_src} 
+                  className="transition-all duration-300 ease-in-out group-hover:brightness-110 group-hover:scale-[1.03] hover:brightness-125 hover:scale-[1.05]"
+                />
+              </div>
             ) : null}
 
             <MinimalCardTitle
@@ -129,10 +135,25 @@ export const ResourceCard: React.FC<{
             <MinimalCardContent>
               <div className="flex flex-wrap gap-1 mt-2">
                 {data.target_stage.map((stage, index) => (
-                  <span key={index} className="text-xs bg-gray-200 rounded-full px-2 py-1">
-                    {stage}
+                  <span key={`stage-${index}`} className="text-xs bg-gray-200 text-black rounded-full px-2 py-1">
+                    🚀 {stage}
                   </span>
                 ))}
+                {data.program_length && (
+                  <span className="text-xs bg-gray-200 text-black rounded-full px-2 py-1">
+                    ⏳ {data.program_length}
+                  </span>
+                )}
+                {data.financial_support && (
+                  <span className="text-xs bg-gray-200 text-black rounded-full px-2 py-1">
+                    💰 {data.financial_support}
+                  </span>
+                )}
+                {data.location && (
+                  <span className="text-xs bg-gray-200 text-black rounded-full px-2 py-1">
+                    📍 {data.location}
+                  </span>
+                )}
               </div>
             </MinimalCardContent>
 
