@@ -43,6 +43,7 @@ const programTypes = [
   { label: "Incubator", value: "Incubator" },
   { label: "Venture builder/startup studio", value: "Venture builder/startup studio" },
   { label: "Fellowships/Grants", value: "Fellowships/Grants" },
+  { label: "Pitch competition", value: "Pitch competition" },
   { label: "Other", value: "Other" },
 ]
 

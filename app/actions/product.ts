@@ -30,9 +30,9 @@ export async function getFilters() {
   }
 
   return {
-    categories: categoriesData.map((item) => item.name).filter(Boolean),
-    labels: labelsData.map((item) => item.labels).filter(Boolean),
-    tags: tagsData.map((item) => item.tags).filter(Boolean),
+    categories: categoriesData.map((item: { name: string }) => item.name).filter(Boolean),
+    labels: labelsData.map((item: { labels: string }) => item.labels).filter(Boolean),
+    tags: tagsData.map((item: { tags: string }) => item.tags).filter(Boolean),
   }
 }
 

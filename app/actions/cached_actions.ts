@@ -31,6 +31,9 @@ async function getFilters(): Promise<FilterData> {
     .from("categories")
     .select("name")
 
+  console.log("Categories data:", categoriesData);
+  console.log("Categories error:", categoriesError);
+
   const { data: labelsData, error: labelsError } = await client
     .from("labels")
     .select("name")

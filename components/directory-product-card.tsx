@@ -121,7 +121,6 @@ export const ResourceCard: React.FC<{
               animate={{ opacity: 1, y: 0 }}
               className="text-xs leading-3 mb-2 text-neutral-500"
             >
-              {getLastPathSegment(data.website, 10)}
             </motion.p>
             <MinimalCardDescription
               className={cn(
@@ -167,7 +166,7 @@ export const ResourceCard: React.FC<{
                   )}
                 >
                   <p className="flex items-center gap-1 tracking-tight text-neutral pr-1 text-xs">
-                    {optimisticResource.view_count || data.view_count}
+                    👀 {optimisticResource.view_count || data.view_count}
                   </p>
                 </div>
               </div>

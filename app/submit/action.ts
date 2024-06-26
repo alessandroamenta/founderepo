@@ -162,7 +162,7 @@ export async function onSubmitToolAction(
       approved: true,
       tags,
       labels,
-      categories: [parsed.data.programType],
+      categories: parsed.data.programType,
     };
 
     console.log("Inserting program data:", programData);
