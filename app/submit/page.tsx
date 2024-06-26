@@ -36,13 +36,12 @@ export default async function ProtectedSubmitPage(): Promise<ReactElement> {
           <div className="flex flex-col items-start mt-4">
             <div className="flex items-center mt-2">
               <span className="mx-2 text-xl font-bold">
-                Submit your tool for approval
+                Submit new program
               </span>
             </div>
             <div className="flex  items-center gap-1 pl-3">
               <p className="mt-2 text-left text-gray-600  text-pretty">
-                Submit products. Build backlinks. <br />
-                Grow seo reach. Get paid.
+                Submit programs. <br />
               </p>
             </div>
           </div>
