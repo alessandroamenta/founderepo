@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/breadcrumb"
 import { Button } from "@/components/ui/button"
 import { CardDescription, CardTitle } from "@/components/ui/card"
+import { ReviewForm } from "@/app/submit/reviewForm"
 
 interface Product {
   id: string
@@ -143,6 +144,7 @@ export const ProductDetails = ({ product }: { product: Product }) => (
     >
       <ArrowLeft className="mr-2" /> Back to all programs
     </Link>
+    <ReviewForm productId={product.id} programName={product.program_name} />
     <div className="absolute top-36 md:top-0 left-[-10%] right-0 h-[400px] w-[300px]  md:h-[500px] md:w-[500px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(255,235,59,.15),rgba(255,255,255,0))]"></div>
   </div>
 )
