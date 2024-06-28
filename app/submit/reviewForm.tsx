@@ -19,6 +19,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { submitReview, ReviewFormState } from "@/app/actions/review"
+import { GradientHeading } from "@/components/cult/gradient-heading"
 
 const formSchema = z.object({
   reviewerName: z.string().min(1, "Name is required"),
@@ -29,11 +30,13 @@ const formSchema = z.object({
 })
 
 export const ReviewForm = ({ productId, programName }: { productId: string, programName: string }) => {
-  const [isOpen, setIsOpen] = useState(false)
-  const [state, formAction] = useFormState<ReviewFormState, FormData>(submitReview, {
-    message: "",
-    issues: [],
-  })
+    const [isOpen, setIsOpen] = useState(false)
+    const [isSubmitted, setIsSubmitted] = useState(false)
+    const [state, formAction] = useFormState<ReviewFormState, FormData>(submitReview, {
+      message: "",
+      issues: [],
+    })
+  
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -58,24 +61,41 @@ export const ReviewForm = ({ productId, programName }: { productId: string, prog
 
     await formAction(formData)
     if (state.issues.length === 0) {
-      setIsOpen(false)
-      form.reset()
+      setIsSubmitted(true)
+      setTimeout(() => {
+        setIsOpen(false)
+      }, 3000) // Close the form after 3 seconds
     }
+  }
+
+  if (isSubmitted) {
+    return (
+      <div className="fixed bottom-4 left-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
+        <p className="font-bold">Thank you for your feedback!</p>
+        <p>Your review has been submitted successfully.</p>
+      </div>
+    )
   }
 
   return (
     <>
-      <Button
-        variant="secondary"
-        className="fixed bottom-4 left-4 flex items-center"
-        onClick={() => setIsOpen(true)}
-      >
-        <PlusIcon className="size-4 mr-1" /> Been through this? Share your experience!
-      </Button>
+      {!isSubmitted && (
+        <div className="fixed bottom-4 left-4 z-30">
+          <Button variant="secondary" asChild>
+            <div
+              onClick={() => setIsOpen(true)}
+              className="flex items-center cursor-pointer"
+            >
+              <PlusIcon className="size-4 mr-1" />
+              Been through this? Share your experience!
+            </div>
+          </Button>
+        </div>
+      )}
 
       {isOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg w-full max-w-md relative">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg w-full max-w-md max-h-[90vh] overflow-y-auto relative">
             <Button
               variant="ghost"
               className="absolute top-2 right-2"
@@ -83,12 +103,14 @@ export const ReviewForm = ({ productId, programName }: { productId: string, prog
             >
               <X className="size-4" />
             </Button>
-            <h2 className="text-2xl font-bold mb-4">Share Your Startup Program Journey! 🚀</h2>
-            <p className="mb-4 text-sm">
+            <GradientHeading size="xs" className="mb-4">
+              Share your experience at {programName}!
+            </GradientHeading>
+            <p className="mb-4 text-sm text-gray-600 dark:text-gray-300">
               Ahoy founder! Thanks for helping out the startup community. Your insights are super valuable for aspiring entrepreneurs starting out. We appreciate your contribution! :)
             </p>
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                 <FormField
                   control={form.control}
                   name="reviewerName"

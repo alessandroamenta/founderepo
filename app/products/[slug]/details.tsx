@@ -76,9 +76,9 @@ export const ProductDetails = ({ product }: { product: Product }) => (
           )}
         >
           {product.logo_src && (
-            <div className="w-full p-1 md:p-3 rounded-[28px] md:rounded-[36px] bg-[#3d3d3d]">
+            <div className="w-full aspect-[16/9] p-1 md:p-3 rounded-[28px] md:rounded-[36px] bg-[#3d3d3d] overflow-hidden">
               <img
-                className="w-full h-full rounded-3xl object-cover"
+                className="w-full h-full rounded-[24px] md:rounded-[32px] object-cover object-center"
                 src={product.logo_src}
                 alt={`${product.program_name} image`}
               />
