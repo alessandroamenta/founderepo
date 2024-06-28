@@ -81,3 +81,20 @@ export async function submitReview(
     }
   }
 }
+
+export async function getReviewsForProduct(productId: string) {
+  const db = createClient()
+  
+  const { data, error } = await db
+    .from('reviews')
+    .select('*')
+    .eq('product_id', productId)
+    .order('created_at', { ascending: false })
+
+  if (error) {
+    console.error("Error fetching reviews:", error)
+    return []
+  }
+
+  return data
+}

@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { PlusIcon, X } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -30,13 +30,13 @@ const formSchema = z.object({
 })
 
 export const ReviewForm = ({ productId, programName }: { productId: string, programName: string }) => {
-    const [isOpen, setIsOpen] = useState(false)
-    const [isSubmitted, setIsSubmitted] = useState(false)
-    const [state, formAction] = useFormState<ReviewFormState, FormData>(submitReview, {
-      message: "",
-      issues: [],
-    })
-  
+  const [isOpen, setIsOpen] = useState(false)
+  const [showThankYou, setShowThankYou] = useState(false)
+  const [showButton, setShowButton] = useState(true)
+  const [state, formAction] = useFormState<ReviewFormState, FormData>(submitReview, {
+    message: "",
+    issues: [],
+  })
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -61,25 +61,27 @@ export const ReviewForm = ({ productId, programName }: { productId: string, prog
 
     await formAction(formData)
     if (state.issues.length === 0) {
-      setIsSubmitted(true)
+      setIsOpen(false)
+      setShowThankYou(true)
+      setShowButton(false)
       setTimeout(() => {
-        setIsOpen(false)
-      }, 3000) // Close the form after 3 seconds
+        setShowThankYou(false)
+      }, 3000) // Hide thank you message after 3 seconds
     }
   }
 
-  if (isSubmitted) {
-    return (
-      <div className="fixed bottom-4 left-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
-        <p className="font-bold">Thank you for your feedback!</p>
-        <p>Your review has been submitted successfully.</p>
-      </div>
-    )
-  }
+  useEffect(() => {
+    if (showThankYou) {
+      const timer = setTimeout(() => {
+        setShowThankYou(false)
+      }, 3000)
+      return () => clearTimeout(timer)
+    }
+  }, [showThankYou])
 
   return (
     <>
-      {!isSubmitted && (
+      {showButton && (
         <div className="fixed bottom-4 left-4 z-30">
           <Button variant="secondary" asChild>
             <div
@@ -90,6 +92,13 @@ export const ReviewForm = ({ productId, programName }: { productId: string, prog
               Been through this? Share your experience!
             </div>
           </Button>
+        </div>
+      )}
+
+      {showThankYou && (
+        <div className="fixed bottom-4 left-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded z-30">
+          <p className="font-bold">Thanks for sharing with the community!</p>
+          <p>Your review has been submitted.</p>
         </div>
       )}
 
