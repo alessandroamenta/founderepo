@@ -21,7 +21,9 @@ import {
 
 import { cn, truncateString } from "@/lib/utils"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { MessageSquareIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { TallyButton } from "./ui/tallybutton"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -72,61 +74,24 @@ export function NavSidebar({
     <>
       <aside
         className={cn(
-          pathname.includes("admin")
-            ? "w-16 border-r border-black/10 dark:border-white/10"
-            : "w-42",
+          "w-42",
           "fixed inset-y-0 left-0 z-10 hidden sm:flex flex-col bg-[#FAFAFA] dark:bg-background"
         )}
       >
         <nav className="flex flex-col items-center gap-4 px-2 py-5">
-          {pathname.includes("admin") ? (
-            <>
-              <LogoAnimationLink />
-              <AdminNav pathname={pathname} />
-            </>
-          ) : (
-            <ProductNav
-              categories={categories}
-              tags={tags}
-              labels={labels}
-              searchParams={searchParams}
-            />
-          )}
+          <ProductNav
+            categories={categories}
+            tags={tags}
+            labels={labels}
+            searchParams={searchParams}
+          />
         </nav>
 
-        <div
-          className={
-            pathname.includes("admin")
-              ? "flex flex-col gap-4 items-center py-5 mt-auto px-2 mx-2"
-              : "pl-3 flex flex-col justify-center gap-4 items-start pb-8"
-          }
-        >
-          <DropdownMenu>
-            <DropdownMenuTrigger>
-              <Avatar>
-                <AvatarFallback className="bg-gradient-to-r from-yellow-300 to-yellow-300" />
-              </Avatar>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent
-              align="end"
-              className="bg-gradient-to-t from-primary/70 to-primary/80 rounded-lg"
-            >
-              <div className="p-[1px] bg-background rounded-md">
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuSeparator className="bg-primary" />
-                <DropdownMenuItem>
-                  <Link href="/admin">Admin</Link>
-                </DropdownMenuItem>
+        <div className="pl-3 flex flex-col justify-center gap-4 items-start pb-8">
+          {/* Tally form button */}
+          <TallyButton />
 
-                <DropdownMenuSeparator className="bg-primary" />
-                <DropdownMenuItem>
-                  <Button className="w-full" onClick={handleLogout}>
-                    <LogOutIcon className="mr-1 size-4" /> Logout
-                  </Button>
-                </DropdownMenuItem>
-              </div>
-            </DropdownMenuContent>
-          </DropdownMenu>
+
           <div className="">
             <ModeToggle />
           </div>
@@ -155,80 +120,55 @@ export function NavSidebar({
               className="sm:max-w-[15rem] py-4 pl-1 border-r border-primary/10"
             >
               <nav className="flex flex-col items-start gap-4 px-2 py-5">
-                {pathname.includes("admin") ? (
-                  <>
-                    <LogoAnimationLink />
-                    <AdminNav pathname={pathname} />
-                  </>
-                ) : (
-                  <>
-                    <ProductNav
-                      tags={tags}
-                      labels={labels}
-                      categories={categories}
-                      handleLinkClick={handleLinkClick}
-                      searchParams={searchParams}
+                <ProductNav
+                  tags={tags}
+                  labels={labels}
+                  categories={categories}
+                  handleLinkClick={handleLinkClick}
+                  searchParams={searchParams}
+                >
+                  <div className="my-4 space-y-3">
+                    <Link
+                      href="/"
+                      className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
+                      prefetch={false}
+                      onClick={handleLinkClick}
                     >
-                      <div className="my-4 space-y-3">
-                        <Link
-                          href="/"
-                          className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-                          prefetch={false}
-                          onClick={handleLinkClick}
-                        >
-                          <HomeIcon className="h-5 w-5" />
-                          Home
-                        </Link>
-                        <Link
-                          href="/submit"
-                          className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-                          prefetch={false}
-                          onClick={handleLinkClick}
-                        >
-                          <PlusIcon className="h-5 w-5" />
-                          Submit
-                        </Link>
-
-                        <Link
-                          href="/login"
-                          className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-                          prefetch={false}
-                          onClick={handleLinkClick}
-                        >
-                          <LogIn className="h-5 w-5" />
-                          Login
-                        </Link>
-                      </div>
-                    </ProductNav>
-                  </>
-                )}
+                      <HomeIcon className="h-5 w-5" />
+                      Home
+                    </Link>
+                    <Link
+                      href="/submit"
+                      className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
+                      prefetch={false}
+                      onClick={handleLinkClick}
+                    >
+                      <PlusIcon className="h-5 w-5" />
+                      Submit
+                    </Link>
+                    <Link
+                      href="/login"
+                      className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
+                      prefetch={false}
+                      onClick={handleLinkClick}
+                    >
+                      <LogIn className="h-5 w-5" />
+                      Login
+                    </Link>
+                  </div>
+                </ProductNav>
               </nav>
               <div className="flex flex-col items-start pl-4">
-                <nav className="mb-6   flex gap-4 ">
-                  <DropdownMenu>
-                    <DropdownMenuTrigger>
-                      <Avatar>
-                        <AvatarFallback className="bg-gradient-to-r from-yellow-300 to-yellow-300" />
-                      </Avatar>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent
-                      align="end"
-                      className="bg-gradient-to-t from-primary/70 to-primary/80 rounded-lg"
+                <nav className="mb-6 flex gap-4 ">
+                  {/* Tally form button for mobile view */}
+                  <Button
+                      variant="secondary"
+                      asChild
                     >
-                      <div className="p-[1px] bg-background rounded-md">
-                        <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                        <DropdownMenuSeparator className="bg-primary" />
-                        <DropdownMenuItem>Settings</DropdownMenuItem>
-                        <DropdownMenuItem>Support</DropdownMenuItem>
-                        <DropdownMenuSeparator className="bg-primary" />
-                        <DropdownMenuItem>
-                          <Button className="w-full" onClick={handleLogout}>
-                            <LogOutIcon className="mr-1 size-4" /> Logout
-                          </Button>
-                        </DropdownMenuItem>
-                      </div>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+                      <Link href="#tally-open=mVlgpl&tally-layout=modal&tally-emoji-text=👋&tally-emoji-animation=wave">
+                        <span className="flex items-center justify-center w-full h-full text-3xl">💬</span>
+                      </Link>
+                    </Button>
                   <ModeToggle />
                 </nav>
               </div>

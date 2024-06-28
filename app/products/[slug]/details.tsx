@@ -155,7 +155,7 @@ export const ProductDetails = ({ product, reviews }: { product: Product, reviews
     
     {/* Reviews section */}
     <div className="mt-12 space-y-6">
-      <h2 className="text-3xl font-bold text-neutral-900 dark:text-neutral-200">Reviews</h2>
+      <h2 className="text-3xl font-bold text-neutral-900 dark:text-neutral-200">Experiences</h2>
       {reviews && reviews.length > 0 ? (
         reviews.map((review: Review) => (
           <ReviewCard
