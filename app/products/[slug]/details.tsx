@@ -75,14 +75,14 @@ export const ProductDetails = ({ product }: { product: Product }) => (
             "bg-white dark:bg-[#1E1E1E]  shadow-[0_0_0_1px_rgba(0,0,0,0.1)_inset,0_0.5px_0.5px_rgba(0,0,0,0.05)_inset,0_-0.5px_0.5px_rgba(0,0,0,0.05)_inset,0_1px_2px_rgba(0,0,0,0.1)] dark:shadow-[0_0_0_0.5px_rgba(255,255,255,0.06)_inset,0_0.5px_0.5px_rgba(255,255,255,0.1)_inset,0_-0.5px_0.5px_rgba(255,255,255,0.1)_inset,0_0.5px_1px_rgba(0,0,0,0.3),0_1px_2px_rgba(0,0,0,0.4)]"
           )}
         >
-          {product.logo_src && (
-            <div className="w-full aspect-[16/9] p-1 md:p-3 rounded-[28px] md:rounded-[36px] bg-[#3d3d3d] overflow-hidden">
-              <img
-                className="w-full h-full rounded-[24px] md:rounded-[32px] object-cover object-center"
-                src={product.logo_src}
-                alt={`${product.program_name} image`}
-              />
-            </div>
+        {product.logo_src && (
+          <div className="w-full aspect-[37/18] p-1 md:p-2 rounded-[26px] md:rounded-[34px] bg-[#3d3d3d] overflow-hidden">
+            <img
+              className="w-full h-full rounded-[22px] md:rounded-[30px] object-cover object-center"
+              src={product.logo_src}
+              alt={`${product.program_name} image`}
+            />
+          </div>
           )}
           {product.description && (
             <CardDescription className="text-2xl tracking-tight leading-tight text-neutral-800 text-balance dark:text-neutral-400">
