@@ -12,27 +12,35 @@ export async function getFilters() {
     .select("name")
 
   const { data: labelsData, error: labelsError } = await db
-    .from("products")
-    .select("labels")
+    .from("labels")
+    .select("name")
 
   const { data: tagsData, error: tagsError } = await db
-    .from("products")
-    .select("tags")
+    .from("tags")
+    .select("name")
 
-  if (categoriesError || labelsError || tagsError) {
+  const { data: countriesData, error: countriesError } = await db
+    .from("countries")
+    .select("name, code")
+
+  if (categoriesError || labelsError || tagsError || countriesError) {
     console.error(
       "Error fetching filters:",
       categoriesError,
       labelsError,
-      tagsError
+      tagsError,
+      countriesError
     )
-    return { categories: [], labels: [], tags: [] }
+    return { categories: [], labels: [], tags: [], countries: [] }
   }
+
+  const unique = (array: string[]) => [...new Set(array)]
 
   return {
     categories: categoriesData.map((item: { name: string }) => item.name).filter(Boolean),
-    labels: labelsData.map((item: { labels: string }) => item.labels).filter(Boolean),
-    tags: tagsData.map((item: { tags: string }) => item.tags).filter(Boolean),
+    labels: labelsData.map((item: { name: string }) => item.name).filter(Boolean),
+    tags: tagsData.map((item: { name: string }) => item.name).filter(Boolean),
+    countries: countriesData.map((item: { name: string, code: string }) => ({ name: item.name, code: item.code })),
   }
 }
 
@@ -41,14 +49,16 @@ export const getProducts = cache(
     searchTerm?: string,
     category?: string,
     label?: string,
-    tag?: string
+    tag?: string,
+    countryCode?: string,
+    isRemote?: boolean
   ) => {
     const db = createClient()
     let query = db.from("products").select("*")
 
     if (searchTerm) {
       query = query.or(
-        `codename.ilike.%${searchTerm}%,description.ilike.%${searchTerm}%,punchline.ilike.%${searchTerm}%`
+        `program_name.ilike.%${searchTerm}%,description.ilike.%${searchTerm}%,punchline.ilike.%${searchTerm}%`
       )
     }
 
@@ -62,6 +72,14 @@ export const getProducts = cache(
 
     if (tag) {
       query = query.contains("tags", [tag])
+    }
+
+    if (countryCode) {
+      query = query.contains("countries", [countryCode])
+    }
+
+    if (isRemote !== undefined) {
+      query = query.eq("is_remote", isRemote)
     }
 
     const { data, error } = await query

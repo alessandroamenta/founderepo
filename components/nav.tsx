@@ -2,6 +2,8 @@
 
 import { ReactNode, useState } from "react"
 import Link from "next/link"
+import { GlobeIcon } from "lucide-react"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { createClient } from "@/db/supabase/client"
 import {
@@ -46,10 +48,12 @@ export function NavSidebar({
   categories,
   tags,
   labels,
+  countries,
 }: {
   categories?: string[]
   labels?: string[]
   tags?: string[]
+  countries?: { name: string; code: string }[]
 }) {
   const pathname = usePathname()
   const searchParams = useSearchParams()
@@ -83,6 +87,7 @@ export function NavSidebar({
             categories={categories}
             tags={tags}
             labels={labels}
+            countries={countries}
             searchParams={searchParams}
           />
         </nav>
@@ -123,6 +128,7 @@ export function NavSidebar({
                 <ProductNav
                   tags={tags}
                   labels={labels}
+                  countries={countries} // Make sure this is being passed
                   categories={categories}
                   handleLinkClick={handleLinkClick}
                   searchParams={searchParams}
@@ -184,6 +190,7 @@ type ProductNavProps = {
   categories?: string[]
   tags?: string[]
   labels?: string[]
+  countries?: { name: string; code: string }[]
   handleLinkClick?: () => void
   searchParams: URLSearchParams
   children?: ReactNode
@@ -193,11 +200,35 @@ function ProductNav({
   categories,
   tags,
   labels,
+  countries,
   searchParams,
   handleLinkClick,
   children,
 }: ProductNavProps) {
-  console.log("Categories:", categories);
+  console.log("Countries in ProductNav:", countries);
+  const router = useRouter()
+
+  const handleCountryChange = (value: string | null) => {
+    const currentParams = new URLSearchParams(searchParams.toString())
+    if (value && value !== "all") {
+      currentParams.set("country", value)
+    } else {
+      currentParams.delete("country")
+    }
+    router.push(`/products?${currentParams.toString()}`)
+  }
+
+  const handleRemoteChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const checked = event.target.checked
+    const currentParams = new URLSearchParams(searchParams.toString())
+    if (checked) {
+      currentParams.set("remote", "true")
+    } else {
+      currentParams.delete("remote")
+    }
+    router.push(`/products?${currentParams.toString()}`)
+  }
+
   return (
     <div className="">
       <LogoAnimationLink />
@@ -233,7 +264,7 @@ function ProductNav({
             </li>
           ))}
         </ul>
-
+        
         {tags && tags?.length > 0 && (
           <div className="flex items-center gap-2 mt-6 text-muted-foreground">
             <TagIcon className="size-5 stroke-pink-400" />
@@ -295,6 +326,47 @@ function ProductNav({
             </li>
           ))}
         </ul>
+
+      {/* Countries section */}
+      {/* Countries section */}
+      {countries && countries.length > 0 && (
+        <div className="mt-6">
+          <div className="flex items-center gap-2 mb-2 text-muted-foreground">
+            <GlobeIcon className="size-5 stroke-green-400" />
+            <p className="text-sm">Country</p>
+          </div>
+          <Select
+            onValueChange={handleCountryChange}
+            defaultValue={searchParams.get("country") || "all"}
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select a country" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Countries</SelectItem>
+              {countries.map((country) => (
+                <SelectItem key={country.code} value={country.code}>
+                  {country.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      )}
+
+        {/* Remote filter */}
+        <div className="flex items-center gap-2 mt-6 text-muted-foreground">
+          <input
+            type="checkbox"
+            checked={searchParams.get("remote") === "true"}
+            onChange={handleRemoteChange}
+            id="remote-filter"
+            className="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          />
+          <label htmlFor="remote-filter" className="text-sm cursor-pointer">
+            Remote Only
+          </label>
+        </div>
       </ScrollArea>
     </div>
   )

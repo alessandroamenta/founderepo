@@ -26,6 +26,7 @@ export default async function ProtectedSubmitPage(): Promise<ReactElement> {
         categories={filters.categories}
         labels={filters.labels}
         tags={filters.tags}
+        countries={filters.countries}
       />
 
       <div className="flex flex-col md:flex-row items-start justify-center py-12 px-4 md:px-0">

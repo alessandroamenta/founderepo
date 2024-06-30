@@ -8,6 +8,11 @@ type FilterData = {
   categories: string[]
   labels: string[]
   tags: string[]
+  countries: { name: string; code: string }[]
+}
+
+type CountryData = {
+  countries: string[]
 }
 
 type CategoryData = {
@@ -26,13 +31,11 @@ const client = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 )
+
 async function getFilters(): Promise<FilterData> {
   const { data: categoriesData, error: categoriesError } = await client
     .from("categories")
     .select("name")
-
-  console.log("Categories data:", categoriesData);
-  console.log("Categories error:", categoriesError);
 
   const { data: labelsData, error: labelsError } = await client
     .from("labels")
@@ -42,14 +45,19 @@ async function getFilters(): Promise<FilterData> {
     .from("tags")
     .select("name")
 
-  if (categoriesError || labelsError || tagsError) {
+  const { data: countriesData, error: countriesError } = await client
+    .from("countries")
+    .select("name, code")
+
+  if (categoriesError || labelsError || tagsError || countriesError) {
     console.error(
       "Error fetching filters:",
       categoriesError,
       labelsError,
-      tagsError
+      tagsError,
+      countriesError
     )
-    return { categories: [], labels: [], tags: [] }
+    return { categories: [], labels: [], tags: [], countries: [] }
   }
 
   const unique = (array: string[]) => [...new Set(array)]
@@ -67,8 +75,14 @@ async function getFilters(): Promise<FilterData> {
   const tags = tagsData
     ? unique(tagsData.map((item: TagData) => item.name).filter(Boolean))
     : []
+    
+    const countries = countriesData
+    ? countriesData.map((item: { name: string, code: string }) => ({ name: item.name, code: item.code }))
+    : []
 
-  return { categories, labels, tags }
+  console.log("Processed countries:", countries);
+
+  return { categories, labels, tags, countries }
 }
 
 export const getCachedFilters = async (): Promise<FilterData> => {
