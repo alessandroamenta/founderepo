@@ -328,7 +328,6 @@ function ProductNav({
         </ul>
 
       {/* Countries section */}
-      {/* Countries section */}
       {countries && countries.length > 0 && (
         <div className="mt-6">
           <div className="flex items-center gap-2 mb-2 text-muted-foreground">
