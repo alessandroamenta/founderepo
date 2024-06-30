@@ -102,9 +102,12 @@ export async function onSubmitToolAction(
 
   // Iterate through all form entries
   for (const [key, value] of formData.entries()) {
-    if (key === 'targetStage') {
-      // If the key is 'targetStage', get all values as an array
+    if (key === 'targetStage' || key === 'countries') {
+      // If the key is 'targetStage' or 'countries', get all values as an array
       parsedData[key] = formData.getAll(key);
+    } else if (key === 'isRemote') {
+      // Parse 'isRemote' as a boolean
+      parsedData[key] = value === 'true';
     } else {
       // For other keys, just use the single value
       parsedData[key] = value;
@@ -154,6 +157,8 @@ export async function onSubmitToolAction(
       financial_support: parsed.data.financialSupport || null,
       program_length: parsed.data.programLength || null,
       location: parsed.data.location || null,
+      countries: parsed.data.countries,
+      is_remote: parsed.data.isRemote || false,
       focus_area: parsed.data.focusArea || null,
       punchline: parsed.data.punchline || null,
       description: parsed.data.description || null,

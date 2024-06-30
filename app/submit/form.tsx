@@ -9,7 +9,14 @@ import { useFormState } from "react-dom"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { z } from "zod"
-
+import {
+  MultiSelector,
+  MultiSelectorContent,
+  MultiSelectorInput,
+  MultiSelectorItem,
+  MultiSelectorList,
+  MultiSelectorTrigger,
+} from "@/components/ui/multi-select"
 import {
   Form,
   FormControl,
@@ -75,6 +82,8 @@ export const SubmitTool = () => {
       financialSupport: "",
       programLength: "",
       location: "",
+      countries: [],
+      isRemote: false,
       focusArea: "",
       targetStage: [],
       punchline: "",
@@ -124,10 +133,16 @@ export const SubmitTool = () => {
           form.handleSubmit(async (data) => {
             let formData = new FormData(formRef.current!)
             const logoFile = form.getValues("images")
-
+          
             for (const [key, value] of Object.entries(data)) {
               if (key === 'targetStage' && Array.isArray(value)) {
+                formData.delete('targetStage');
                 value.forEach(item => formData.append('targetStage', item));
+              } else if (key === 'countries' && Array.isArray(value)) {
+                formData.delete('countries');
+                value.forEach(item => formData.append('countries', item));
+              } else if (key === 'isRemote') {
+                formData.set(key, value.toString());
               } else if (value !== undefined) {
                 formData.set(key, value);
               }
@@ -234,6 +249,83 @@ export const SubmitTool = () => {
             </FormItem>
           )}
         />
+<FormField
+  control={form.control}
+  name="countries"
+  render={({ field }) => (
+    <FormItem>
+      <FormLabel>Countries</FormLabel>
+      <FormControl>
+        <MultiSelector
+          values={field.value}
+          onValuesChange={field.onChange}
+          className="max-w-xs"
+        >
+          <MultiSelectorTrigger>
+            <MultiSelectorInput placeholder="Select countries" />
+          </MultiSelectorTrigger>
+          <MultiSelectorContent>
+            <MultiSelectorList>
+              <MultiSelectorItem value="US">United States</MultiSelectorItem>
+              <MultiSelectorItem value="CN">China</MultiSelectorItem>
+              <MultiSelectorItem value="JP">Japan</MultiSelectorItem>
+              <MultiSelectorItem value="DE">Germany</MultiSelectorItem>
+              <MultiSelectorItem value="UK">United Kingdom</MultiSelectorItem>
+              <MultiSelectorItem value="FR">France</MultiSelectorItem>
+              <MultiSelectorItem value="IN">India</MultiSelectorItem>
+              <MultiSelectorItem value="IT">Italy</MultiSelectorItem>
+              <MultiSelectorItem value="BR">Brazil</MultiSelectorItem>
+              <MultiSelectorItem value="CA">Canada</MultiSelectorItem>
+              <MultiSelectorItem value="RU">Russia</MultiSelectorItem>
+              <MultiSelectorItem value="KR">South Korea</MultiSelectorItem>
+              <MultiSelectorItem value="AU">Australia</MultiSelectorItem>
+              <MultiSelectorItem value="ES">Spain</MultiSelectorItem>
+              <MultiSelectorItem value="MX">Mexico</MultiSelectorItem>
+              <MultiSelectorItem value="ID">Indonesia</MultiSelectorItem>
+              <MultiSelectorItem value="NL">Netherlands</MultiSelectorItem>
+              <MultiSelectorItem value="SA">Saudi Arabia</MultiSelectorItem>
+              <MultiSelectorItem value="TR">Turkey</MultiSelectorItem>
+              <MultiSelectorItem value="CH">Switzerland</MultiSelectorItem>
+              <MultiSelectorItem value="SE">Sweden</MultiSelectorItem>
+              <MultiSelectorItem value="PL">Poland</MultiSelectorItem>
+              <MultiSelectorItem value="BE">Belgium</MultiSelectorItem>
+              <MultiSelectorItem value="TH">Thailand</MultiSelectorItem>
+              <MultiSelectorItem value="AT">Austria</MultiSelectorItem>
+              <MultiSelectorItem value="NO">Norway</MultiSelectorItem>
+              <MultiSelectorItem value="AE">United Arab Emirates</MultiSelectorItem>
+              <MultiSelectorItem value="SG">Singapore</MultiSelectorItem>
+              <MultiSelectorItem value="MY">Malaysia</MultiSelectorItem>
+              <MultiSelectorItem value="IL">Israel</MultiSelectorItem>
+            </MultiSelectorList>
+          </MultiSelectorContent>
+        </MultiSelector>
+      </FormControl>
+      <FormMessage />
+    </FormItem>
+  )}
+/>
+<FormField
+  control={form.control}
+  name="isRemote"
+  render={({ field }) => (
+    <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+      <FormControl>
+        <Checkbox
+          checked={field.value}
+          onCheckedChange={field.onChange}
+        />
+      </FormControl>
+      <div className="space-y-1 leading-none">
+        <FormLabel>
+          Remote Option Available
+        </FormLabel>
+        <FormDescription>
+          Check this if the program offers a remote option.
+        </FormDescription>
+      </div>
+    </FormItem>
+  )}
+/>
         <FormField
           control={form.control}
           name="focusArea"

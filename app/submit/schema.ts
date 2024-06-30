@@ -7,6 +7,8 @@ export const schema = z.object({
   financialSupport: z.string().trim().optional(),
   programLength: z.string().trim().optional(),
   location: z.string().trim().optional(),
+  countries: z.array(z.string()).min(1, { message: "At least one country is required." }),
+  isRemote: z.boolean().optional(),
   focusArea: z.string().trim().optional(),
   targetStage: z.array(z.string()).min(1, { message: "At least one target stage is required." }),
   punchline: z.string().trim().max(30, { message: "Punchline must be less than 10 words." }).optional(),
