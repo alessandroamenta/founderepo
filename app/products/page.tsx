@@ -1,13 +1,10 @@
 import { ReactElement } from "react"
-import { BoxIcon, Hash, Search, TagIcon } from "lucide-react"
-
+import { BoxIcon, Hash, Search, TagIcon, GlobeIcon } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { FadeIn } from "@/components/cult/fade-in"
 import { GradientHeading } from "@/components/cult/gradient-heading"
 import { ResourceCardGrid } from "@/components/directory-card-grid"
-import { GlobeIcon } from "lucide-react"
-
 import { NavSidebar } from "../../components/nav"
 import { getCachedFilters } from "../actions/cached_actions"
 import { getProducts } from "../actions/product"
@@ -30,19 +27,22 @@ export default async function ProductsPage({
   const data = await getProducts(search, category, label, tag, country, remote === "true")
   let filters = await getCachedFilters()
 
-  // Function to get the country name from its code
-  const getCountryName = (code: string) => {
+  // Function to get the country info from its code
+  const getCountryInfo = (code: string) => {
     const countryObj = filters.countries.find(c => c.code === code)
-    return countryObj ? countryObj.name : code
+    return countryObj ? { name: countryObj.name, flag: countryObj.flag } : { name: code, flag: '' }
   }
 
   // Construct the filter description
   let filterDescription = ""
+  let countryFlag = ""
   if (category) {
     filterDescription += category
   }
   if (country) {
-    filterDescription += category ? ` in ${getCountryName(country)}` : getCountryName(country)
+    const countryInfo = getCountryInfo(country)
+    filterDescription += category ? ` in ${countryInfo.name}` : countryInfo.name
+    countryFlag = countryInfo.flag
   }
   if (remote === "true") {
     filterDescription += filterDescription ? " (Remote)" : "Remote"
@@ -67,9 +67,14 @@ export default async function ProductsPage({
                   {country && <GlobeIcon className="mr-1 bg-neutral-800 fill-green-300/30 stroke-green-500 size-6 p-1 rounded-full" />}
                   {remote === "true" && <BoxIcon className="mr-1 bg-neutral-800 fill-blue-300/30 stroke-blue-500 size-6 p-1 rounded-full" />}
                 </div>
-                <GradientHeading size="xxl">
-                  {filterDescription}
-                </GradientHeading>
+                <GradientHeading size="lg" className="flex items-center">
+                {filterDescription}
+                {countryFlag && (
+                  <span className="ml-2 text-2xl" style={{ color: 'initial' }}>
+                    {countryFlag}
+                  </span>
+                )}
+              </GradientHeading>
               </div>
             ) : null}
           </ResourceCardGrid>

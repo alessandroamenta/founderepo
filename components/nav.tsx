@@ -26,6 +26,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { MessageSquareIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { TallyButton } from "./ui/tallybutton"
+import {Checkbox} from "@/components/ui/checkbox"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -218,8 +219,7 @@ function ProductNav({
     router.push(`/products?${currentParams.toString()}`)
   }
 
-  const handleRemoteChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const checked = event.target.checked
+  const handleRemoteChange = (checked: boolean) => {
     const currentParams = new URLSearchParams(searchParams.toString())
     if (checked) {
       currentParams.set("remote", "true")
@@ -353,19 +353,20 @@ function ProductNav({
         </div>
       )}
 
-        {/* Remote filter */}
-        <div className="flex items-center gap-2 mt-6 text-muted-foreground">
-          <input
-            type="checkbox"
-            checked={searchParams.get("remote") === "true"}
-            onChange={handleRemoteChange}
-            id="remote-filter"
-            className="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-          />
-          <label htmlFor="remote-filter" className="text-sm cursor-pointer">
-            Remote Only
-          </label>
-        </div>
+      {/* Remote filter */}
+      <div className="flex items-center gap-2 mt-6 text-muted-foreground">
+      <Checkbox
+          id="remote-filter"
+          checked={searchParams.get("remote") === "true"}
+          onCheckedChange={handleRemoteChange}
+        />
+        <label
+          htmlFor="remote-filter"
+          className="text-sm cursor-pointer select-none font-medium"
+        >
+          Remote Only
+        </label>
+      </div>
       </ScrollArea>
     </div>
   )
@@ -455,22 +456,17 @@ function AdminNav({ pathname }: { pathname: string }) {
 export function LogoAnimationLink() {
   return (
     <Button
-      className="relative w-full size-9 rounded-full bg-black"
+      className="relative w-full size-9 rounded-full bg-black overflow-hidden"
       variant="outline"
       asChild
     >
-      <Link href="/" className="flex justify-center">
-        <div className="absolute bg-yellow-300/90 h-[80%] w-[2px] rounded-bl-full rounded-br-full l-0 r-0 animate-[spin-scale_40s_linear_infinite]" />
-        <div className="absolute bg-pink-300/90 h-[80%] w-[2px] rounded-bl-full rounded-br-full l-0 r-0 animate-[spin-scale_30s_linear_infinite]" />
-        <div className="absolute bg-cyan-300/70 h-[80%] w-[2px] rounded-bl-full rounded-br-full l-0 r-0 animate-[spin-scale_20s_linear_infinite]" />
-        <div className="absolute bg-yellow-300/90 h-[80%] w-[2px] rounded-bl-full rounded-br-full l-0 r-0 animate-[spin-scale_15s_linear_infinite]" />
-        <div className="absolute bg-pink-300/70 h-[80%] w-[2px] rounded-bl-full rounded-br-full l-0 r-0 animate-[spin-scale_10s_linear_infinite]" />
-
-        <div className="absolute bg-pink-300/90 h-[40%] w-[2px] rounded-bl-full rounded-br-full l-0 r-0 animate-[spin-scale_80s_linear_infinite]" />
-        <div className="absolute bg-cyan-300/70 h-[40%] w-[2px] rounded-bl-full rounded-br-full l-0 r-0 animate-[spin-scale_60s_linear_infinite]" />
-        <div className="absolute bg-yellow-300/90 h-[40%] w-[2px] rounded-bl-full rounded-br-full l-0 r-0 animate-[spin-scale_40s_linear_infinite]" />
-        <div className="absolute bg-pink-300/90 h-[40%] w-[2px] rounded-bl-full rounded-br-full l-0 r-0 animate-[spin-scale_30s_linear_infinite]" />
-        <div className="absolute bg-cyan-300/90 h-[40%] w-[2px] rounded-bl-full rounded-br-full l-0 r-0 animate-[spin-scale_20s_linear_infinite]" />
+      <Link href="/" className="flex justify-center items-center">
+        <div 
+          className="text-2xl"
+          style={{
+            animation: 'spin 10s linear infinite',
+          }}
+        >🛠️</div>
       </Link>
     </Button>
   )
