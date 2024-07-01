@@ -169,13 +169,14 @@ export function NavSidebar({
                 <nav className="mb-6 flex gap-4 ">
                   {/* Tally form button for mobile view */}
                   <Button
-                      variant="secondary"
-                      asChild
-                    >
-                      <Link href="#tally-open=mVlgpl&tally-layout=modal&tally-emoji-text=👋&tally-emoji-animation=wave">
-                        <span className="flex items-center justify-center w-full h-full text-3xl">💬</span>
-                      </Link>
-                    </Button>
+                  variant="secondary"
+                  asChild
+                  className="w-10 h-10 rounded-full flex items-center justify-center"
+                >
+                  <Link href="#tally-open=mVlgpl&tally-layout=modal&tally-emoji-text=👋&tally-emoji-animation=wave">
+                    <span className="text-xl">💬</span>
+                  </Link>
+                </Button>
                   <ModeToggle />
                 </nav>
               </div>
