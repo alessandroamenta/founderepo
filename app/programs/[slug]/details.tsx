@@ -70,7 +70,7 @@ export const ProductDetails = ({ product, reviews }: { product: Product, reviews
             )}
 
             <Link
-              href={`/programs`}
+              href={`/`}
               className="py-4 md:flex items-center text-2xl font-semibold text-yellow-500  z-10 hidden"
             >
               <ArrowLeft className="mr-2" /> Back to all programs

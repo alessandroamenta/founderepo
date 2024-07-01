@@ -16,28 +16,34 @@ const defaultUrl = process.env.VERCEL_URL
   ? `https://www.nextjs.design`
   : "http://localhost:3000"
 
-export const metadata = {
-  metadataBase: new URL(defaultUrl),
-  title: "Design x Engineering Directory - Discover Top Web Dev Tools",
-  description:
-    "Explore a curated directory of free web development tools for designers and engineers. Find resources for JavaScript, Tailwind CSS, and more!",
-  keywords:
-    "Design, Engineering, Web Development, JavaScript, Tailwind CSS, Supabase, Free Tools, Design Engineering",
-  structuredData: {
-    "@context": "http://schema.org",
-    "@type": "WebSite",
-    name: "Design x Engineering Directory",
-    url: "https://www.nextjs.design/",
+  export const metadata = {
+    metadataBase: new URL(defaultUrl),
+    title: "Founderepo - startup programs directory",
     description:
-      "A free directory of awesome web development tools for design and engineering professionals.",
-  },
-  socialMediaTags: {
-    "og:title": "Design x Engineering Directory - Discover Top Web Dev Tools",
-    "og:description":
       "Explore a curated directory of free web development tools for designers and engineers. Find resources for JavaScript, Tailwind CSS, and more!",
-    "twitter:card": "summary_large_image",
-  },
-}
+    keywords:
+      "Design, Engineering, Web Development, JavaScript, Tailwind CSS, Supabase, Free Tools, Design Engineering",
+      icons: {
+        icon: [
+          { url: '/favicon.ico', sizes: 'any' },
+          { url: '/favicon.png', type: 'image/png' },
+        ],
+      },
+    structuredData: {
+      "@context": "http://schema.org",
+      "@type": "WebSite",
+      name: "Design x Engineering Directory",
+      url: "https://www.nextjs.design/",
+      description:
+        "A free directory of awesome web development tools for design and engineering professionals.",
+    },
+    socialMediaTags: {
+      "og:title": "Design x Engineering Directory - Discover Top Web Dev Tools",
+      "og:description":
+        "Explore a curated directory of free web development tools for designers and engineers. Find resources for JavaScript, Tailwind CSS, and more!",
+      "twitter:card": "summary_large_image",
+    },
+  }
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
