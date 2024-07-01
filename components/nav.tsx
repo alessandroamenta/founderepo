@@ -271,7 +271,7 @@ function ProductNav({
             <p className="text-sm md:hidden">Tags</p>
           </div>
         )}
-        <ul className="mt-2 md:w-36 flex flex-col gap-2 items-start justify-center py-2">
+        <ul className="mt-2 w-36 flex flex-col gap-2 items-start justify-center pt-2 pb-0"> {/* Changed py-2 to pt-2 pb-0 */}
           {tags?.map((tag: string, index: number) => (
             <li key={`tag-${index}-${tag}`}>
               <Link
@@ -302,8 +302,8 @@ function ProductNav({
             <p className="text-sm md:hidden">Labels</p>
           </div>
         )}
-        <ul className="mt-2 w-36 flex flex-col gap-2 items-start justify-center py-2">
-          {labels?.map((label: string, index: number) => (
+      <ul className="mt-2 w-36 flex flex-col gap-2 items-start justify-center py-2"> {/* Added pb-1 */}
+        {labels?.map((label: string, index: number) => (
             <li key={`label-${index}-${label}`}>
               <Link
                 href={`/products?label=${label}`}
@@ -329,15 +329,15 @@ function ProductNav({
 
       {/* Countries section */}
       {countries && countries.length > 0 && (
-        <div className="mt-6">
-          <div className="flex items-center gap-2 mb-2 text-muted-foreground">
-            <GlobeIcon className="size-5 stroke-green-400" />
-            <p className="text-sm">Country</p>
-          </div>
-          <Select
-            onValueChange={handleCountryChange}
-            defaultValue={searchParams.get("country") || "all"}
-          >
+  <div className="-mt-5"> 
+    <div className="flex items-center gap-2 mb-2 text-muted-foreground">
+      <GlobeIcon className="size-5 stroke-green-400" />
+      <p className="text-sm">Country</p>
+    </div>
+    <Select
+      onValueChange={handleCountryChange}
+      defaultValue={searchParams.get("country") || "all"}
+    >
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select a country" />
             </SelectTrigger>

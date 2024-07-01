@@ -7,7 +7,7 @@ import {
   Blocks,
   ExternalLink,
 } from "lucide-react"
-
+import { ReviewBentoGrid } from '@/components/review-bento-grid'
 import { cn } from "@/lib/utils"
 import {
   Breadcrumb,
@@ -154,21 +154,13 @@ export const ProductDetails = ({ product, reviews }: { product: Product, reviews
     </Link>
     
     {/* Reviews section */}
-    <div className="mt-12 space-y-6">
-      <h2 className="text-3xl font-bold text-neutral-900 dark:text-neutral-200">Experiences</h2>
-      {reviews && reviews.length > 0 ? (
-        reviews.map((review: Review) => (
-          <ReviewCard
-            key={review.id}
-            reviewerName={review.reviewer_name}
-            experience={review.experience}
-            createdAt={review.created_at}
-          />
-        ))
-      ) : (
-        <p className="text-neutral-500 dark:text-neutral-400">No reviews yet.</p>
-      )}
-    </div>
+    {reviews && reviews.length > 0 && (
+  <div className="mt-12 space-y-6">
+    <h2 className="text-3xl font-bold text-neutral-900 dark:text-neutral-200">Founder Experiences/Reviews</h2>
+    <ReviewBentoGrid reviews={reviews} />
+  </div>
+)}
+
     
     <ReviewForm productId={product.id} programName={product.program_name} />
     <div className="absolute top-36 md:top-0 left-[-10%] right-0 h-[400px] w-[300px]  md:h-[500px] md:w-[500px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(255,235,59,.15),rgba(255,255,255,0))]"></div>
