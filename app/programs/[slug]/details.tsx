@@ -54,7 +54,7 @@ export const ProductDetails = ({ product, reviews }: { product: Product, reviews
             <Breadcrumb>
               <BreadcrumbItem>
                 <BreadcrumbLink href="/">Programs</BreadcrumbLink>/
-                <BreadcrumbLink href={`/products/${product.id}`}>
+                <BreadcrumbLink href={`/programs/${product.id}`}>
                   {product.program_name.substring(0, 20)}
                 </BreadcrumbLink>
               </BreadcrumbItem>
@@ -70,7 +70,7 @@ export const ProductDetails = ({ product, reviews }: { product: Product, reviews
             )}
 
             <Link
-              href={`/products`}
+              href={`/programs`}
               className="py-4 md:flex items-center text-2xl font-semibold text-yellow-500  z-10 hidden"
             >
               <ArrowLeft className="mr-2" /> Back to all programs

@@ -84,8 +84,8 @@ export const ResourceCard: React.FC<{
       className="group relative break-inside-avoid w-full"
     >
       <Link
-        href={`/products/${data.id}`}
-        key={`/products/${data.id}`}
+        href={`/programs/${data.id}`}
+        key={`/programs/${data.id}`}
         className=""
         onClick={handleClick}
       >

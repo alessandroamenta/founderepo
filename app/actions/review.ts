@@ -70,7 +70,7 @@ export async function submitReview(
 
     console.log("Review data successfully inserted:", insertedData)
 
-    revalidatePath(`/products/${parsed.data.productId}`)
+    revalidatePath(`/programs/${parsed.data.productId}`)
 
     return { message: "Review submitted successfully", issues: [] }
   } catch (error) {

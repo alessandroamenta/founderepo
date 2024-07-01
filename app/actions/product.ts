@@ -122,5 +122,5 @@ export async function incrementClickCount(id: string) {
     console.log("Click count incremented:", data)
   }
 
-  revalidatePath("/products")
+  revalidatePath("/programs")
 }

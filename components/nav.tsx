@@ -217,7 +217,7 @@ function ProductNav({
     } else {
       currentParams.delete("country")
     }
-    router.push(`/products?${currentParams.toString()}`)
+    router.push(`/programs?${currentParams.toString()}`)
   }
 
   const handleRemoteChange = (checked: boolean) => {
@@ -227,7 +227,7 @@ function ProductNav({
     } else {
       currentParams.delete("remote")
     }
-    router.push(`/products?${currentParams.toString()}`)
+    router.push(`/programs?${currentParams.toString()}`)
   }
 
   return (
@@ -238,14 +238,14 @@ function ProductNav({
         {categories && categories?.length > 0 && (
           <div className="flex items-center gap-2 mt-6 text-muted-foreground">
             <BoxIcon className="size-5 stroke-yellow-400" />
-            <p className="text-sm md:hidden">Categories</p>
+            <p className="text-sm">Category</p>
           </div>
         )}
         <ul className="mt-2 w-36 flex flex-col gap-2 items-start justify-center py-2">
           {categories?.map((category: string, index: number) => (
             <li key={`category-${index}-${category}`}>
               <Link
-                href={`/products?category=${category}`}
+                href={`/programs?category=${category}`}
                 onClick={handleLinkClick}
                 className={cn(
                   "flex items-start space-x-2 text-sm font-medium text-neutral-700 dark:text-neutral-300 rounded-md px-2 py-0.5",
@@ -276,7 +276,7 @@ function ProductNav({
           {tags?.map((tag: string, index: number) => (
             <li key={`tag-${index}-${tag}`}>
               <Link
-                href={`/products?tag=${tag}`}
+                href={`/programs?tag=${tag}`}
                 onClick={handleLinkClick}
                 className={cn(
                   "flex items-start space-x-2 text-sm font-medium text-neutral-700 dark:text-neutral-300 rounded-md px-2 py-0.5",
@@ -307,7 +307,7 @@ function ProductNav({
         {labels?.map((label: string, index: number) => (
             <li key={`label-${index}-${label}`}>
               <Link
-                href={`/products?label=${label}`}
+                href={`/programs?label=${label}`}
                 onClick={handleLinkClick}
                 className={cn(
                   "flex items-start space-x-2 text-sm font-medium text-neutral-700 dark:text-neutral-300 rounded-md px-2 py-0.5",
@@ -397,12 +397,12 @@ function AdminNav({ pathname }: { pathname: string }) {
       <Tooltip>
         <TooltipTrigger asChild>
           <Link
-            href="/admin/products"
+            href="/admin/programs"
             className={cn(
               "flex gap-2 md:gap-0 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8",
               {
                 "bg-accent text-accent-foreground":
-                  pathname === "/admin/products",
+                  pathname === "/admin/programs",
               }
             )}
             prefetch={false}
