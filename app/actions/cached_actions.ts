@@ -8,7 +8,7 @@ type FilterData = {
   categories: string[]
   labels: string[]
   tags: string[]
-  countries: { name: string; code: string }[]
+  countries: { name: string; code: string; flag: string }[]
 }
 
 type CountryData = {
@@ -47,7 +47,7 @@ async function getFilters(): Promise<FilterData> {
 
   const { data: countriesData, error: countriesError } = await client
     .from("countries")
-    .select("name, code")
+    .select("name, code, flag")
 
   if (categoriesError || labelsError || tagsError || countriesError) {
     console.error(
@@ -76,8 +76,12 @@ async function getFilters(): Promise<FilterData> {
     ? unique(tagsData.map((item: TagData) => item.name).filter(Boolean))
     : []
     
-    const countries = countriesData
-    ? countriesData.map((item: { name: string, code: string }) => ({ name: item.name, code: item.code }))
+  const countries = countriesData
+    ? countriesData.map((item: { name: string, code: string, flag: string }) => ({ 
+        name: item.name, 
+        code: item.code, 
+        flag: item.flag 
+      }))
     : []
 
   console.log("Processed countries:", countries);

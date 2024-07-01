@@ -53,7 +53,7 @@ export function NavSidebar({
   categories?: string[]
   labels?: string[]
   tags?: string[]
-  countries?: { name: string; code: string }[]
+  countries?: { name: string; code: string; flag: string }[]
 }) {
   const pathname = usePathname()
   const searchParams = useSearchParams()
@@ -190,7 +190,7 @@ type ProductNavProps = {
   categories?: string[]
   tags?: string[]
   labels?: string[]
-  countries?: { name: string; code: string }[]
+  countries?: { name: string; code: string; flag: string }[]
   handleLinkClick?: () => void
   searchParams: URLSearchParams
   children?: ReactNode
@@ -345,7 +345,7 @@ function ProductNav({
               <SelectItem value="all">All Countries</SelectItem>
               {countries.map((country) => (
                 <SelectItem key={country.code} value={country.code}>
-                  {country.name}
+              {country.flag} {country.name}
                 </SelectItem>
               ))}
             </SelectContent>

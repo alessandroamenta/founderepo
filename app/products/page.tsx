@@ -29,36 +29,46 @@ export default async function ProductsPage({
   const { search, category, label, tag, country, remote } = searchParams
   const data = await getProducts(search, category, label, tag, country, remote === "true")
   let filters = await getCachedFilters()
-  
-  console.log("Filters in ProductsPage:", filters);
+
+  // Function to get the country name from its code
+  const getCountryName = (code: string) => {
+    const countryObj = filters.countries.find(c => c.code === code)
+    return countryObj ? countryObj.name : code
+  }
+
+  // Construct the filter description
+  let filterDescription = ""
+  if (category) {
+    filterDescription += category
+  }
+  if (country) {
+    filterDescription += category ? ` in ${getCountryName(country)}` : getCountryName(country)
+  }
+  if (remote === "true") {
+    filterDescription += filterDescription ? " (Remote)" : "Remote"
+  }
 
   return (
     <>
-    <NavSidebar
-      categories={filters.categories}
-      labels={filters.labels}
-      tags={filters.tags}
-      countries={filters.countries}
-    />
+      <NavSidebar
+        categories={filters.categories}
+        labels={filters.labels}
+        tags={filters.tags}
+        countries={filters.countries}
+      />
 
       <div className="max-w-full pt-4">
         <FadeIn>
           <ResourceCardGrid sortedData={data} filteredFeaturedData={null}>
-            {search || category || label || tag || country || remote ? (
+            {filterDescription ? (
               <div className="md:mr-auto mx-auto flex flex-col items-center md:items-start">
                 <div className="flex mb-1 justify-center md:justify-start">
-                  {/* ... (existing icon code) ... */}
+                  {category && <BoxIcon className="mr-1 bg-neutral-800 fill-yellow-300/30 stroke-yellow-500 size-6 p-1 rounded-full" />}
                   {country && <GlobeIcon className="mr-1 bg-neutral-800 fill-green-300/30 stroke-green-500 size-6 p-1 rounded-full" />}
-                  {remote && <BoxIcon className="mr-1 bg-neutral-800 fill-blue-300/30 stroke-blue-500 size-6 p-1 rounded-full" />}
-                  {search ? "search" : ""}
-                  {category ? "category" : ""}
-                  {label ? "label" : ""}
-                  {tag ? "tag" : ""}
-                  {country ? "country" : ""}
-                  {remote ? "remote" : ""}
+                  {remote === "true" && <BoxIcon className="mr-1 bg-neutral-800 fill-blue-300/30 stroke-blue-500 size-6 p-1 rounded-full" />}
                 </div>
                 <GradientHeading size="xxl">
-                  {search || category || label || tag || country || (remote ? "Remote" : "")}
+                  {filterDescription}
                 </GradientHeading>
               </div>
             ) : null}
